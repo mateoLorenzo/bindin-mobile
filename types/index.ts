@@ -11,4 +11,5 @@ export interface FormQuestion {
   answerType: formAnswerTypes | null;
   customHint: string;
   singleChoiceOptions: string[];
+  isHintActive: boolean;
 }

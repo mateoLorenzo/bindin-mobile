@@ -34,10 +34,10 @@ export default function CreateForm() {
       answerType: null,
       customHint: "",
       singleChoiceOptions: [],
+      isHintActive: false,
     },
   ]);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
-  const [activeHintIndex, setActiveHintIndex] = useState<number | null>(null);
   const [optionErrors, setOptionErrors] = useState<boolean[][]>([]);
   const scrollViewRef = useRef<KeyboardAwareScrollView>(null);
 
@@ -60,6 +60,7 @@ export default function CreateForm() {
         answerType: null,
         customHint: "",
         singleChoiceOptions: [],
+        isHintActive: false,
       },
     ]);
     setOptionErrors([...optionErrors, [false, false]]);
@@ -69,7 +70,6 @@ export default function CreateForm() {
     setQuestions(questions.filter((_, idx) => idx !== idxToRemove));
     setOptionErrors(optionErrors.filter((_, idx) => idx !== idxToRemove));
     if (activeMenuIndex === idxToRemove) setActiveMenuIndex(null);
-    if (activeHintIndex === idxToRemove) setActiveHintIndex(null);
   };
 
   const isFormValid = questions.every(
@@ -245,7 +245,7 @@ export default function CreateForm() {
                           setQuestions(newQuestions);
                           setActiveMenuIndex(null);
                           if (option.value === "Single choice") {
-                            setActiveHintIndex(null);
+                            setActiveMenuIndex(null);
                           }
                         }}
                         title={
@@ -259,7 +259,7 @@ export default function CreateForm() {
                   })}
                 </Menu>
 
-                {activeHintIndex === idx && q.answerType !== "SINGLE_CHOICE" ? (
+                {q.isHintActive && q.answerType !== "SINGLE_CHOICE" ? (
                   <View style={styles.customHintInputContainer}>
                     <TextInput
                       style={[
@@ -278,7 +278,11 @@ export default function CreateForm() {
                     />
                     <TouchableOpacity
                       style={styles.deleteHintButton}
-                      onPress={() => setActiveHintIndex(null)}
+                      onPress={() => {
+                        const newQuestions = [...questions];
+                        newQuestions[idx].isHintActive = false;
+                        setQuestions(newQuestions);
+                      }}
                     >
                       <DeleteIcon width={22} height={22} />
                     </TouchableOpacity>
@@ -289,7 +293,11 @@ export default function CreateForm() {
                       styles.customHintButton,
                       q.answerType === null && styles.disabledButton,
                     ]}
-                    onPress={() => setActiveHintIndex(idx)}
+                    onPress={() => {
+                      const newQuestions = [...questions];
+                      newQuestions[idx].isHintActive = true;
+                      setQuestions(newQuestions);
+                    }}
                     disabled={q.answerType === null}
                   >
                     <Text

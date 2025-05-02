@@ -1,50 +1,121 @@
-# Welcome to your Expo app 👋
+# Bindin - Social Polling App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<div align="center">
+  <img width="150" alt="Demo bindin 1" src="https://github.com/user-attachments/assets/77f9e7e4-ae69-4796-a957-85482152e726" />
+  <img width="150" alt="Demo bindin 2" src="https://github.com/user-attachments/assets/3205fad6-da99-49e9-ae75-c5c96cc9d37a" />
+  <img width="150" alt="Demo bindin 3" src="https://github.com/user-attachments/assets/4e8aac99-547b-47cf-a5dd-e13edf711bf3" />
+  <img width="150" alt="Demo bindin 4" src="https://github.com/user-attachments/assets/2e906411-65f4-4d7a-bc9d-1fdda07e4ced" />
+  <img width="150" alt="Demo bindin 5" src="https://github.com/user-attachments/assets/3dd6c43d-4e0f-49d2-bf4a-34871120e302" />
+  <img width="150" alt="Demo bindin 6" src="https://github.com/user-attachments/assets/149aff7b-206f-4bfe-9eb8-0c0297a13e87" />
+</div>
 
-## Get started
+## 📱 About The Project
 
-1. Install dependencies
+Bindin is a modern social polling application built with React Native and Expo. It allows users to create and participate in polls and forms, making it easy to gather opinions and information from your community.
+
+### Key Features
+
+- 📊 Create and participate in polls
+- 📝 Create custom forms with multiple question types
+- 🎨 Modern and intuitive dark theme UI
+- ⚡ Smooth animations and transitions
+- 📱 Fully responsive design
+- 💾 Local storage for data persistence
+
+### Built With
+
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React Navigation](https://reactnavigation.org/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or newer)
+- npm or yarn
+- iOS Simulator or Android Emulator (optional)
+- Expo Go app on your physical device (optional)
+
+### Installation
+
+1. Clone the repository
+
+   ```bash
+   git clone https://github.com/yourusername/bindin-mobile.git
+   ```
+
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Start the development server
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+### Running the App
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+You can run the app in multiple ways:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Scan the QR code with Expo Go (iOS/Android)
+- Press 'i' for iOS simulator
+- Press 'a' for Android emulator
 
-## Get a fresh project
+## 🎯 Project Structure
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+bindin-mobile/
+├── app/                    # Main application code
+│   ├── (auth)/            # Authentication related screens
+│   ├── (home)/            # Main app screens
+│   └── _layout.tsx        # Root layout component
+├── components/            # Reusable components
+├── types/                 # TypeScript type definitions
+├── utils/                 # Utility functions
+└── assets/               # Images, fonts, etc.
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📋 Features Implementation
 
-## Learn more
+### Forms and Polls
 
-To learn more about developing your project with Expo, look at the following resources:
+- Multiple question types support (Short answer, Long answer, Numeric, Single choice)
+- Custom hints for questions
+- Real-time validation
+- Animated transitions between questions
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### UI/UX
 
-## Join the community
+- Consistent dark theme throughout the app
+- Smooth animations for better user experience
+- Responsive design that works on all screen sizes
+- Custom components for better code reusability
 
-Join our community of developers creating universal apps.
+## 🛠️ Technical Decisions
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Used TypeScript for better type safety and development experience
+- Implemented file-based routing with Expo Router for better navigation management
+- Created custom components for consistent UI across the app
+- Used AsyncStorage for local data persistence
+- Implemented proper form validation and error handling
+
+## 🤝 Contributing
+
+This project was created as part of a coding challenge, but contributions, issues, and feature requests are welcome!
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+**Mateo Lorenzo**
+
+- LinkedIn: [Mateo Lorenzo](https://linkedin.com/in/mateolr)
+- GitHub: [@mateolr97](https://github.com/mateolr97)

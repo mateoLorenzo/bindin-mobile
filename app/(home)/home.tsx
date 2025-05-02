@@ -74,10 +74,17 @@ export default function Home() {
     );
   };
 
+  const deleteAllPosts = async () => {
+    await StorageService.clearPosts();
+    setLatestPosts(initialPosts);
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <GestureHandlerRootView style={styles.screenContainer}>
-        <BindinIcon width={100} height={50} />
+        <TouchableOpacity onPress={() => deleteAllPosts()}>
+          <BindinIcon width={100} height={50} />
+        </TouchableOpacity>
 
         {isLoading || !latestPosts.length ? (
           <View style={styles.loaderContainer}>
@@ -100,80 +107,80 @@ export default function Home() {
             </View>
           </KeyboardAwareScrollView>
         )}
-        <View style={styles.buttonContainer}>
-          <BlurView
-            intensity={40}
-            tint="dark"
-            style={[
-              StyleSheet.absoluteFillObject,
-              { transform: [{ scale: 1.2 }] },
-            ]}
-          />
-          <View style={styles.buttonBackground} />
-          <CustomButton
-            label="New post"
-            onPress={openDrawer}
-            leftIcon={<AddIcon width={20} height={20} fill="#121212" />}
-            variant="primary"
-          />
-        </View>
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={-1}
-          enablePanDownToClose
-          backgroundStyle={styles.blackBackground}
-          handleIndicatorStyle={styles.handleIndicator}
-          backdropComponent={(props) => (
-            <BottomSheetBackdrop
-              {...props}
-              appearsOnIndex={0}
-              disappearsOnIndex={-1}
-              pressBehavior="close"
-            />
-          )}
-        >
-          <BottomSheetView style={styles.contentContainer}>
-            <Text variant="title" style={styles.title}>
-              Select type
-            </Text>
-            <Text variant="body" style={styles.sheetSubtitle}>
-              Make it as cool as you like!
-            </Text>
-
-            <View style={styles.boxContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.box,
-                  postType === "POLL" && styles.activeBox,
-                  styles.pollbox,
-                ]}
-                activeOpacity={0.7}
-                onPress={() => setPostType("POLL")}
-              >
-                <PollIcon width={75} height={75} />
-                <Text style={styles.boxText}>Poll</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.box, postType === "FORM" && styles.activeBox]}
-                activeOpacity={0.7}
-                onPress={() => setPostType("FORM")}
-              >
-                <FormIcon width={75} height={75} />
-                <Text style={styles.boxText}>Form</Text>
-              </TouchableOpacity>
-            </View>
-
-            <CustomButton
-              label="Continue"
-              onPress={continueToCreatePost}
-              variant="primary"
-              disabled={!postType}
-              style={styles.continueButton}
-            />
-          </BottomSheetView>
-        </BottomSheet>
       </GestureHandlerRootView>
+      <View style={styles.buttonContainer}>
+        <BlurView
+          intensity={40}
+          tint="dark"
+          style={[
+            StyleSheet.absoluteFillObject,
+            { transform: [{ scale: 1.2 }] },
+          ]}
+        />
+        <View style={styles.buttonBackground} />
+        <CustomButton
+          label="New post"
+          onPress={openDrawer}
+          leftIcon={<AddIcon width={20} height={20} fill="#121212" />}
+          variant="primary"
+        />
+      </View>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        enablePanDownToClose
+        backgroundStyle={styles.blackBackground}
+        handleIndicatorStyle={styles.handleIndicator}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            {...props}
+            appearsOnIndex={0}
+            disappearsOnIndex={-1}
+            pressBehavior="close"
+          />
+        )}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <Text variant="title" style={styles.title}>
+            Select type
+          </Text>
+          <Text variant="body" style={styles.sheetSubtitle}>
+            Make it as cool as you like!
+          </Text>
+
+          <View style={styles.boxContainer}>
+            <TouchableOpacity
+              style={[
+                styles.box,
+                postType === "POLL" && styles.activeBox,
+                styles.pollbox,
+              ]}
+              activeOpacity={0.7}
+              onPress={() => setPostType("POLL")}
+            >
+              <PollIcon width={75} height={75} />
+              <Text style={styles.boxText}>Poll</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.box, postType === "FORM" && styles.activeBox]}
+              activeOpacity={0.7}
+              onPress={() => setPostType("FORM")}
+            >
+              <FormIcon width={75} height={75} />
+              <Text style={styles.boxText}>Form</Text>
+            </TouchableOpacity>
+          </View>
+
+          <CustomButton
+            label="Continue"
+            onPress={continueToCreatePost}
+            variant="primary"
+            disabled={!postType}
+            style={styles.continueButton}
+          />
+        </BottomSheetView>
+      </BottomSheet>
     </SafeAreaView>
   );
 }
@@ -191,7 +198,6 @@ const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
     backgroundColor: "#121212",
-    paddingHorizontal: Platform.OS === "android" ? 0 : 20,
     paddingTop: Platform.OS === "android" ? 40 : 20,
   },
   screenContainer: {
@@ -221,6 +227,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     width: "100%",
     overflow: "hidden",
+    paddingHorizontal: 20,
   },
   buttonBackground: {
     position: "absolute",

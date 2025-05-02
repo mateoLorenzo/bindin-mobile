@@ -21,7 +21,7 @@ export default function VerifyNumber() {
   };
 
   const navigateToAddPassword = () => {
-    router.push("/auth/addPassword");
+    router.push("/addPassword");
   };
 
   const handleOtpChange = (code: string) => {

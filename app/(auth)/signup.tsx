@@ -23,7 +23,7 @@ export default function SignUp() {
 
   const navigateToVerify = () => {
     router.push({
-      pathname: "/auth/verifyNumber",
+      pathname: "/verifyNumber",
       params: {
         phoneNumber: `${phonePrefix} ${phoneNumber.trim() || "1140392404"}`,
       },
