@@ -69,7 +69,7 @@ This project demonstrates the adaptation of web-focused requirements into a nati
 
 4. Start the development server
    ```bash
-   npx expo start
+   npx expo start --tunnel
    ```
 
 ### Running the App
