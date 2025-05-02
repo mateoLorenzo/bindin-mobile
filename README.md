@@ -1,19 +1,13 @@
-# Bindin - Mobile Poll & Form Builder
+# Bindin Challenge - Mateo Lorenzo
 
 <div align="center">
-  <img width="150" alt="Demo bindin 1" src="https://github.com/user-attachments/assets/77f9e7e4-ae69-4796-a957-85482152e726" />
-  <img width="150" alt="Demo bindin 2" src="https://github.com/user-attachments/assets/3205fad6-da99-49e9-ae75-c5c96cc9d37a" />
-  <img width="150" alt="Demo bindin 3" src="https://github.com/user-attachments/assets/4e8aac99-547b-47cf-a5dd-e13edf711bf3" />
-  <img width="150" alt="Demo bindin 4" src="https://github.com/user-attachments/assets/2e906411-65f4-4d7a-bc9d-1fdda07e4ced" />
-  <img width="150" alt="Demo bindin 5" src="https://github.com/user-attachments/assets/3dd6c43d-4e0f-49d2-bf4a-34871120e302" />
-  <img width="150" alt="Demo bindin 6" src="https://github.com/user-attachments/assets/149aff7b-206f-4bfe-9eb8-0c0297a13e87" />
+https://github.com/user-attachments/assets/c8a9c594-7026-419c-9936-2e9c1a5abe61
 </div>
+
 
 ## 📱 About The Project
 
-Bindin is a React Native implementation of a poll and form builder challenge, originally designed for web but adapted for mobile. The app enables users to create and participate in both simple polls and complex forms, featuring a modern dark theme UI and smooth animations.
-
-This project demonstrates the adaptation of web-focused requirements into a native mobile experience, maintaining the core functionality while embracing mobile-first design patterns and native UI components.
+Bindin is a React Native implementation of a poll and form builder challenge, built with scalability in mind allowing users to create and participate in both simple polls and complex forms, featuring a modern dark theme UI and smooth animations.
 
 ### Key Features
 
@@ -28,6 +22,12 @@ This project demonstrates the adaptation of web-focused requirements into a nati
 - 📱 Native mobile components and interactions
 - 💾 Local storage for data persistence
 - 🔍 Custom hints and placeholders for form questions
+
+## 🎨 Design
+
+The UI/UX design for this project was created in Figma. You can view and interact with the design files here:
+
+[![Figma Design](https://img.shields.io/badge/Figma-Design-FF6B6B?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/HQZIiREqknCArdK5cy72TH/Mobb?node-id=513-2&p=f&t=rBq4SBnHMtzOtoig-0)
 
 ### Built With
 
@@ -84,14 +84,14 @@ You can run the app in multiple ways:
 
 ```
 bindin-mobile/
-├── app/                    # Main application code
+├── app/                   # Main application code
 │   ├── (auth)/            # Authentication related screens
 │   ├── (home)/            # Main app screens
 │   └── _layout.tsx        # Root layout component
 ├── components/            # Reusable components
 ├── types/                 # TypeScript type definitions
 ├── utils/                 # Utility functions
-└── assets/               # Images, fonts, etc.
+└── assets/                # Images, fonts, etc.
 ```
 
 ## 📋 Features Implementation
@@ -120,4 +120,4 @@ bindin-mobile/
 
 ## 👤 Author
 
-**Mateo Lorenzo**
+**Mateo Lorenzo** 💻
