@@ -1,4 +1,4 @@
-# Bindin - Social Polling App
+# Bindin - Mobile Poll & Form Builder
 
 <div align="center">
   <img width="150" alt="Demo bindin 1" src="https://github.com/user-attachments/assets/77f9e7e4-ae69-4796-a957-85482152e726" />
@@ -11,16 +11,23 @@
 
 ## 📱 About The Project
 
-Bindin is a modern social polling application built with React Native and Expo. It allows users to create and participate in polls and forms, making it easy to gather opinions and information from your community.
+Bindin is a React Native implementation of a poll and form builder challenge, originally designed for web but adapted for mobile. The app enables users to create and participate in both simple polls and complex forms, featuring a modern dark theme UI and smooth animations.
+
+This project demonstrates the adaptation of web-focused requirements into a native mobile experience, maintaining the core functionality while embracing mobile-first design patterns and native UI components.
 
 ### Key Features
 
-- 📊 Create and participate in polls
-- 📝 Create custom forms with multiple question types
-- 🎨 Modern and intuitive dark theme UI
-- ⚡ Smooth animations and transitions
-- 📱 Fully responsive design
+- 📊 Create and participate in single-choice polls with real-time results
+- 📝 Build multi-question forms with various input types:
+  - Short answer text inputs
+  - Long answer text areas
+  - Numeric inputs
+  - Single choice options
+- 🎨 Custom-designed dark theme UI optimized for mobile
+- ⚡ Smooth animations and transitions between steps
+- 📱 Native mobile components and interactions
 - 💾 Local storage for data persistence
+- 🔍 Custom hints and placeholders for form questions
 
 ### Built With
 
@@ -54,7 +61,13 @@ Bindin is a modern social polling application built with React Native and Expo. 
    npm install
    ```
 
-3. Start the development server
+3. If haven't got expo, install it running
+
+   ```bash
+   yarn add expo
+   ```
+
+4. Start the development server
    ```bash
    npx expo start
    ```
@@ -105,17 +118,6 @@ bindin-mobile/
 - Used AsyncStorage for local data persistence
 - Implemented proper form validation and error handling
 
-## 🤝 Contributing
-
-This project was created as part of a coding challenge, but contributions, issues, and feature requests are welcome!
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👤 Author
 
 **Mateo Lorenzo**
-
-- LinkedIn: [Mateo Lorenzo](https://linkedin.com/in/mateolr)
-- GitHub: [@mateolr97](https://github.com/mateolr97)
