@@ -2,19 +2,43 @@ import { AppText as Text } from "@/components/AppText";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Alert,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TextInput,
   View,
 } from "react-native";
 
 import CustomButton from "@/components/CustomButton";
+import { useQuery } from "@tanstack/react-query";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+
+const getTodos = async (id: number) => {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/comments?postId=${id}`
+    );
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export default function SignUp() {
+  const [id, setId] = useState(1);
   const [phonePrefix, setPhonePrefix] = useState("+549");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const { data, isFetching, refetch, error } = useQuery({
+    // El id es un parametro para que react query no cachee el resultado si el ID cambia
+    queryKey: ["signup", id],
+    queryFn: () => getTodos(id),
+  });
 
   const formatPhone = (raw: string) => {
     const phone = parsePhoneNumberFromString(raw, "AR");
@@ -30,6 +54,10 @@ export default function SignUp() {
     });
   };
 
+  if (error) {
+    return Alert.alert("Error", error.message);
+  }
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView
@@ -39,107 +67,20 @@ export default function SignUp() {
         keyboardShouldPersistTaps="handled"
         bounces={false}
       >
-        <Text style={styles.title} variant="subtitle">
-          Sign Up
+        <Text style={styles.title} variant="caption">
+          {isFetching ? "Loading..." : JSON.stringify(data.slice(0, 10))}
         </Text>
-        <Text style={styles.subtitle}>Enter your phone number</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={[styles.input, styles.prefixInput]}
-            placeholder="+549"
-            value={phonePrefix}
-            onChangeText={setPhonePrefix}
-            keyboardType="phone-pad"
-          />
-          <TextInput
-            style={[styles.input, styles.numberInput]}
-            placeholder="Phone number"
-            placeholderTextColor="#9CA3AF"
-            value={phoneNumber}
-            onChangeText={formatPhone}
-            keyboardType="phone-pad"
-          />
-        </View>
-        <Text variant="caption" style={styles.numberInputCaption}>
-          We will send you a verification code to this number.
-        </Text>
+        <Text>{id}</Text>
+        <View style={{ flex: 1 }} />
+        {/* Esta funcion parece no ejecutarse porque react query cachea el
+        resultado, si queremos que se muestre el loader entonces habria que usar
+        el isFetching */}
+        <CustomButton onPress={refetch} label="Refetch" />
         <CustomButton
-          label="Sign Up"
-          onPress={navigateToVerify}
-          variant="primary"
+          style={{ marginTop: 10 }}
+          onPress={() => setId(id + 1)}
+          label="Change ID"
         />
-        <View style={styles.divisor}>
-          <View style={styles.divisorLine} />
-          <Text variant="caption">OR</Text>
-          <View style={styles.divisorLine} />
-        </View>
-
-        <View style={styles.signupButtonsContainer}>
-          <CustomButton
-            label="Sign up with Apple"
-            onPress={navigateToVerify}
-            variant="social"
-            socialProvider="apple"
-          />
-          <CustomButton
-            label="Sign up with Google"
-            onPress={navigateToVerify}
-            variant="social"
-            socialProvider="google"
-          />
-          <CustomButton
-            label="Sign up with Facebook"
-            onPress={navigateToVerify}
-            variant="social"
-            socialProvider="facebook"
-          />
-          <CustomButton
-            label="Sign up with Email"
-            onPress={navigateToVerify}
-            variant="social"
-            socialProvider="email"
-          />
-        </View>
-
-        <View style={styles.termsContainer}>
-          <Text variant="caption" style={styles.termsText}>
-            By continuing, you agree to the Bindin.gg&apos;s
-          </Text>
-          <Text variant="caption" style={styles.termsText}>
-            <Text
-              variant="caption"
-              style={[styles.termsText, styles.termsTextLink]}
-            >
-              Terms & Conditions
-            </Text>{" "}
-            and{" "}
-            <Text
-              variant="caption"
-              style={[styles.termsText, styles.termsTextLink]}
-            >
-              Privacy Policy.
-            </Text>
-          </Text>
-        </View>
-
-        <Text
-          variant="body"
-          style={[styles.bottomText, styles.bottomTextMargin]}
-        >
-          Already a user?
-          <Text variant="body" style={styles.bottomLink}>
-            {" "}
-            Log in
-          </Text>
-        </Text>
-
-        <Text variant="body" style={styles.bottomText}>
-          Not ready to sign up?
-          <Text variant="body" style={styles.bottomLink}>
-            {" "}
-            Guest mode
-          </Text>
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -158,6 +99,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 40,
     alignItems: "center",
+    flex: 1,
   },
   title: {
     marginTop: Platform.OS === "android" ? 30 : 0,
