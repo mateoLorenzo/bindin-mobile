@@ -90,13 +90,17 @@ const SignInScreen = () => {
 
           <View style={styles.forgotPasswordContainer}>
             <Link href="/ForgotPassword">
-              <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+              <Text style={styles.forgotPasswordText} variant="button">
+                ¿Olvidaste tu contraseña?
+              </Text>
             </Link>
           </View>
 
           <View style={styles.signInButtonContainer}>
             <TouchableOpacity style={styles.signInButton}>
-              <Text style={styles.signInButtonText}>Continuar</Text>
+              <Text style={styles.signInButtonText} variant="button">
+                Continuar
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
