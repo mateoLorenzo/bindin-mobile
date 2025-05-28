@@ -12,7 +12,7 @@ export function AppText({ variant = "body", style, ...rest }: Props) {
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "OpenSauceOneBold",
+    fontFamily: "PoppinsBold",
     fontSize: 24,
     color: "#fff",
   },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   label: {
-    fontFamily: "OpenSauceOneRegular",
+    fontFamily: "OpenSauceOneSemiBold",
     fontSize: 14,
     color: "#ADADAD",
   },

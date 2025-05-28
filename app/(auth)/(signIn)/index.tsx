@@ -5,11 +5,11 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { AppText as Text } from "../../../src/components/AppText";
 
 const SignInScreen = () => {
   const router = useRouter();
@@ -23,25 +23,32 @@ const SignInScreen = () => {
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Ingresa a tu cuenta</Text>
+            <Text style={styles.title} variant="title">
+              Ingresa a tu cuenta
+            </Text>
           </View>
           <View style={styles.authButtonsContainer}>
             <TouchableOpacity style={styles.authButton}>
               <Ionicons name="logo-google" size={20} color="#fff" style={styles.authIcon} />
-              <Text style={styles.authText}>Ingresa con Google</Text>
+              <Text style={styles.authText} variant="button">
+                Ingresa con Google
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.authButton}>
               <Ionicons name="logo-twitch" size={20} color="#fff" style={styles.authIcon} />
-              <Text style={styles.authText}>Ingresa con Twitch</Text>
+              <Text style={styles.authText} variant="button">
+                Ingresa con Twitch
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.authButton}>
               <FontAwesome6 name="discord" size={18} color="#fff" style={styles.authIcon} />
-              <Text style={styles.authText}>Ingresa con Discord</Text>
+              <Text style={styles.authText} variant="button">
+                Ingresa con Discord
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Divider */}
         <View style={styles.sectionDivider}>
           <View style={styles.sectionDividerLine} />
           <Text style={styles.sectionDividerText}>o</Text>
@@ -50,7 +57,9 @@ const SignInScreen = () => {
 
         <View style={styles.emailAuthContainer}>
           <View style={styles.emailInputGroup}>
-            <Text style={styles.emailInputGroupLabel}>Correo electrónico</Text>
+            <Text style={styles.emailInputGroupLabel} variant="label">
+              Correo electrónico
+            </Text>
             <TextInput
               style={styles.emailAuthInput}
               placeholder="Ejemplo@gmail.com"
@@ -60,7 +69,9 @@ const SignInScreen = () => {
           </View>
 
           <View style={styles.emailInputGroup}>
-            <Text style={styles.emailInputGroupLabel}>Contraseña</Text>
+            <Text style={styles.emailInputGroupLabel} variant="label">
+              Contraseña
+            </Text>
             <View style={styles.passwordInputContainer}>
               <TextInput
                 style={[styles.emailAuthInput, styles.passwordInput]}
@@ -78,7 +89,7 @@ const SignInScreen = () => {
           </View>
 
           <View style={styles.forgotPasswordContainer}>
-            <Link href="/(auth)/(signIn)/ForgotPassword">
+            <Link href="/ForgotPassword">
               <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
             </Link>
           </View>
@@ -124,7 +135,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "700",
-    fontFamily: "OpenSauceOneRegularRegular",
     color: "#fff",
   },
   authButtonsContainer: {
@@ -151,7 +161,6 @@ const styles = StyleSheet.create({
   authText: {
     fontSize: 13,
     fontWeight: "600",
-    fontFamily: "OpenSauceOneRegular",
     color: "#fff",
   },
   sectionDivider: {
@@ -169,7 +178,6 @@ const styles = StyleSheet.create({
   },
   sectionDividerText: {
     fontSize: 12,
-    fontFamily: "OpenSauceOneRegular",
     color: "#ADADAD",
     fontWeight: "500",
   },
@@ -187,14 +195,12 @@ const styles = StyleSheet.create({
   },
   emailInputGroupLabel: {
     fontSize: 13,
-    fontFamily: "OpenSauceOneRegular",
     color: "#fff",
     fontWeight: "600",
   },
   emailAuthInput: {
     fontSize: 13,
     fontWeight: "500",
-    fontFamily: "OpenSauceOneRegular",
     color: "#fff",
     borderWidth: 1,
     borderColor: "rgba(228, 230, 234, 0.1)",
@@ -222,7 +228,6 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     fontSize: 13,
-    fontFamily: "OpenSauceOneRegular",
     color: "#C084FC",
     fontWeight: "600",
   },
@@ -243,7 +248,6 @@ const styles = StyleSheet.create({
   signInButtonText: {
     fontSize: 13,
     fontWeight: "600",
-    fontFamily: "OpenSauceOneRegular",
     color: "#121212",
   },
 });
