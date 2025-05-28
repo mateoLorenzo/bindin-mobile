@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   button: {
     fontFamily: "OpenSauceOneSemiBold",
-    fontSize: 16,
+    fontSize: 14,
     color: "#fff",
   },
   label: {

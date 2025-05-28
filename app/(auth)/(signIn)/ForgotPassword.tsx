@@ -39,29 +39,24 @@ const ForgotPasswordScreen = () => {
           </TouchableOpacity>
 
           <View style={styles.titleContainer}>
-            <Text style={styles.title} variant="title">
-              Recupera tu contraseña
-            </Text>
+            <Text variant="title">Recupera tu contraseña</Text>
           </View>
         </View>
 
         <View style={styles.emailAuthContainer}>
-          <View style={styles.emailInputGroup}>
-            <Text style={styles.emailInputGroupLabel} variant="label">
-              Correo electrónico
-            </Text>
-            <TextInput
-              style={styles.emailAuthInput}
-              placeholder="Ejemplo@gmail.com"
-              placeholderTextColor="#9CA3AF"
-              keyboardType="email-address"
-              keyboardAppearance="dark"
-              autoFocus
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-            />
-          </View>
+          <Text style={styles.emailInputGroupLabel} variant="label">
+            Correo electrónico
+          </Text>
+          <TextInput
+            style={styles.emailAuthInput}
+            placeholder="Ejemplo@gmail.com"
+            placeholderTextColor="#9CA3AF"
+            keyboardType="email-address"
+            autoFocus
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+          />
         </View>
 
         <KeyboardAvoidingView
@@ -89,14 +84,9 @@ export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#121212",
-    display: "flex",
-    flexDirection: "column",
     flex: 1,
   },
   header: {
-    display: "flex",
-    flexDirection: "column",
     alignItems: "center",
     paddingHorizontal: 20,
   },
@@ -108,35 +98,22 @@ const styles = StyleSheet.create({
     height: 15,
   },
   titleContainer: {
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#fff",
-  },
   emailAuthContainer: {
-    display: "flex",
-    flexDirection: "column",
     paddingHorizontal: 20,
     marginTop: 35,
+    gap: 10,
   },
   emailInputGroup: {
-    display: "flex",
-    flexDirection: "column",
     gap: 10,
   },
   emailInputGroupLabel: {
-    fontSize: 13,
     color: "#fff",
-    fontWeight: "600",
   },
   emailAuthInput: {
-    fontSize: 13,
-    fontWeight: "500",
     color: "#fff",
     borderWidth: 1,
     borderColor: "rgba(228, 230, 234, 0.1)",
@@ -148,7 +125,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signInButtonContainer: {
-    display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
     flex: 1,
@@ -156,17 +132,14 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   signInButton: {
-    display: "flex",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 16,
-    borderRadius: 23.5,
+    borderRadius: 100,
     backgroundColor: "#C084FC",
     width: "100%",
   },
   signInButtonText: {
-    fontSize: 13,
-    fontWeight: "600",
     color: "#121212",
   },
 });
