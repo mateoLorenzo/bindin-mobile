@@ -6,6 +6,7 @@ export default function AuthLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPassword" options={{ headerShown: false }} />
       <Stack.Screen name="ResetPassword" options={{ headerShown: false }} />
+      <Stack.Screen name="CheckYourEmail" options={{ headerShown: false }} />
     </Stack>
   );
 }

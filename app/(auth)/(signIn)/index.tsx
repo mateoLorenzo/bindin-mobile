@@ -15,11 +15,19 @@ const SignInScreen = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
+  const goBack = () => {
+    router.back();
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <ScrollView bounces={false}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.backButton} onPress={goBack}>
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <View style={styles.titleContainer}>
@@ -71,10 +79,7 @@ const SignInScreen = () => {
                 placeholderTextColor="#9CA3AF"
                 secureTextEntry={!showPassword}
               />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}
-              >
+              <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
                 <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#969696" />
               </TouchableOpacity>
             </View>
