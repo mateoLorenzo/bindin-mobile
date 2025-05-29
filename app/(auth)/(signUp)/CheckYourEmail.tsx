@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 const CheckYourEmail = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>CheckYourEmail</Text>
+      <Text style={{ color: "white" }}>CheckYourEmail</Text>
     </View>
   );
 };

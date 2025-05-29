@@ -70,7 +70,7 @@ const ResetPasswordScreen = () => {
               onChangeText={setCode}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleCodeVisibility}>
-              <Ionicons name={showCode ? "eye" : "eye-off"} size={24} color="#969696" />
+              <Ionicons name={showCode ? "eye" : "eye-off"} size={24} color="#ADADAD" />
             </TouchableOpacity>
           </View>
         </View>
@@ -89,7 +89,7 @@ const ResetPasswordScreen = () => {
               onChangeText={setNewPassword}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleNewPasswordVisibility}>
-              <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="#969696" />
+              <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
             </TouchableOpacity>
           </View>
         </View>
@@ -108,7 +108,7 @@ const ResetPasswordScreen = () => {
               onChangeText={setConfirmPassword}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleConfirmPasswordVisibility}>
-              <Ionicons name={showConfirmPassword ? "eye" : "eye-off"} size={24} color="#969696" />
+              <Ionicons name={showConfirmPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
             </TouchableOpacity>
           </View>
         </View>

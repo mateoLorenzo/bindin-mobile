@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextProps } from "react-native";
 
-type TextVariants = "title" | "subtitle" | "button" | "label" | "body";
+type TextVariants = "title" | "subtitle" | "button" | "label" | "body" | "link";
 
 interface Props extends TextProps {
   variant?: TextVariants;
@@ -35,5 +35,11 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSauceOneRegular",
     fontSize: 12,
     color: "#fff",
+  },
+  link: {
+    fontFamily: "OpenSauceOneSemiBold",
+    fontSize: 14,
+    color: "#C084FC",
+    textDecorationLine: "underline",
   },
 });

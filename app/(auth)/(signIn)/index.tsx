@@ -80,7 +80,7 @@ const SignInScreen = () => {
                 secureTextEntry={!showPassword}
               />
               <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
-                <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#969696" />
+                <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
               </TouchableOpacity>
             </View>
           </View>
