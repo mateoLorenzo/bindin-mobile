@@ -7,11 +7,16 @@ const CheckYourEmail = () => {
   const goBack = () => {
     router.back();
   };
+
+  const onOpenEmail = () => {
+    router.navigate("/(onboarding)");
+  };
+
   return (
     <CheckYourEmailMessage
       email="mateolorenzo.dev@gmail.com"
       onResendEmail={() => {}}
-      onOpenEmail={() => {}}
+      onOpenEmail={onOpenEmail}
       onBack={goBack}
     />
   );
