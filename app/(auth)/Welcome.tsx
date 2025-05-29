@@ -13,6 +13,10 @@ const WelcomeScreen = () => {
     router.navigate("/(auth)/(signUp)");
   };
 
+  const navigateToHome = () => {
+    router.navigate("/(home)");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.logoSection}>
@@ -35,7 +39,7 @@ const WelcomeScreen = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.guestContainer}>
+        <TouchableOpacity style={styles.guestContainer} onPress={navigateToHome}>
           <Text style={styles.guestText} variant="button">
             Continuar como invitado
           </Text>

@@ -23,6 +23,10 @@ const SignInScreen = () => {
     setShowPassword(!showPassword);
   };
 
+  const navigateToHome = () => {
+    router.navigate("/(home)");
+  };
+
   return (
     <ScrollView bounces={false}>
       <SafeAreaView style={styles.container}>
@@ -94,7 +98,7 @@ const SignInScreen = () => {
           </View>
 
           <View style={styles.signInButtonContainer}>
-            <TouchableOpacity style={styles.signInButton}>
+            <TouchableOpacity style={styles.signInButton} onPress={navigateToHome}>
               <Text style={styles.signInButtonText} variant="button">
                 Continuar
               </Text>
