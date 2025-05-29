@@ -1,11 +1,19 @@
+import { useRouter } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { CheckYourEmailMessage } from "../../../src/components/CheckYourEmailMessage";
 
 const CheckYourEmail = () => {
+  const router = useRouter();
+  const goBack = () => {
+    router.back();
+  };
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ color: "white" }}>CheckYourEmail</Text>
-    </View>
+    <CheckYourEmailMessage
+      email="mateolorenzo.dev@gmail.com"
+      onResendEmail={() => {}}
+      onOpenEmail={() => {}}
+      onBack={goBack}
+    />
   );
 };
 
