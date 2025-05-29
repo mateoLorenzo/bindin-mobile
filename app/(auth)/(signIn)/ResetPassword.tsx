@@ -1,13 +1,202 @@
-import React from "react";
-import { Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { AppText as Text } from "../../../src/components/AppText";
 
 const ResetPasswordScreen = () => {
+  const [showCode, setShowCode] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [code, setCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const areAllInputsFilled =
+    code.trim() !== "" && newPassword.trim() !== "" && confirmPassword.trim() !== "";
+
+  const goBack = () => {
+    router.back();
+  };
+
+  const toggleCodeVisibility = () => {
+    setShowCode(!showCode);
+  };
+
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const confirmPasswordReset = () => {
+    console.log("confirmPasswordReset");
+  };
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Reset Password screen</Text>
-      <Text>Go home</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+
+        <Text style={styles.title} variant="title">
+          Reestablece tu contraseña
+        </Text>
+      </View>
+
+      <View style={styles.codeAuthContainer}>
+        <View style={styles.resetPasswordInputGroup}>
+          <Text style={styles.codeInputGroupLabel} variant="label">
+            Codigo (te lo enviamos por correo)
+          </Text>
+          <View style={styles.codeInputContainer}>
+            <TextInput
+              style={styles.codeAuthInput}
+              placeholder="***********"
+              placeholderTextColor="#ADADAD"
+              secureTextEntry={!showCode}
+              value={code}
+              onChangeText={setCode}
+            />
+            <TouchableOpacity style={styles.eyeIcon} onPress={toggleCodeVisibility}>
+              <Ionicons name={showCode ? "eye" : "eye-off"} size={24} color="#969696" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.resetPasswordInputGroup}>
+          <Text style={styles.codeInputGroupLabel} variant="label">
+            Nueva contraseña
+          </Text>
+          <View style={styles.codeInputContainer}>
+            <TextInput
+              style={styles.codeAuthInput}
+              placeholder="***********"
+              placeholderTextColor="#ADADAD"
+              secureTextEntry={!showNewPassword}
+              value={newPassword}
+              onChangeText={setNewPassword}
+            />
+            <TouchableOpacity style={styles.eyeIcon} onPress={toggleNewPasswordVisibility}>
+              <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="#969696" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.resetPasswordInputGroup}>
+          <Text style={styles.codeInputGroupLabel} variant="label">
+            Confirmar contraseña
+          </Text>
+          <View style={styles.codeInputContainer}>
+            <TextInput
+              style={styles.codeAuthInput}
+              placeholder="***********"
+              placeholderTextColor="#ADADAD"
+              secureTextEntry={!showConfirmPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <TouchableOpacity style={styles.eyeIcon} onPress={toggleConfirmPasswordVisibility}>
+              <Ionicons name={showConfirmPassword ? "eye" : "eye-off"} size={24} color="#969696" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <View style={styles.signInButtonContainer}>
+          <TouchableOpacity
+            style={{ ...styles.signInButton, opacity: areAllInputsFilled ? 1 : 0.4 }}
+            disabled={!areAllInputsFilled}
+            onPress={confirmPasswordReset}
+          >
+            <Text style={styles.signInButtonText} variant="button">
+              Confirmar
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 export default ResetPasswordScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    alignSelf: "flex-start",
+  },
+  title: {
+    paddingVertical: 10,
+  },
+  codeAuthContainer: {
+    paddingHorizontal: 20,
+    marginTop: 8,
+  },
+  resetPasswordInputGroup: {
+    gap: 10,
+    marginTop: 20,
+  },
+  codeInputGroupLabel: {
+    color: "#fff",
+  },
+  codeAuthInput: {
+    color: "#fff",
+    borderWidth: 1,
+    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
+    paddingRight: 50,
+  },
+  codeInputContainer: {
+    position: "relative",
+    justifyContent: "center",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 20,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  signInButtonContainer: {
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  signInButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
+    borderRadius: 23.5,
+    backgroundColor: "#C084FC",
+    width: "100%",
+  },
+  signInButtonText: {
+    color: "#121212",
+  },
+});
