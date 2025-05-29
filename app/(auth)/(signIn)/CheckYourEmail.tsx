@@ -57,8 +57,6 @@ const CheckYourEmail = () => {
   );
 };
 
-export default CheckYourEmail;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#121212",
@@ -142,3 +140,5 @@ const styles = StyleSheet.create({
     color: "#121212",
   },
 });
+
+export default CheckYourEmail;

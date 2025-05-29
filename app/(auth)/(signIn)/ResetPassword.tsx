@@ -134,8 +134,6 @@ const ResetPasswordScreen = () => {
   );
 };
 
-export default ResetPasswordScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -200,3 +198,5 @@ const styles = StyleSheet.create({
     color: "#121212",
   },
 });
+
+export default ResetPasswordScreen;
