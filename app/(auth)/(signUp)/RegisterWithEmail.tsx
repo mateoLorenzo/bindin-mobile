@@ -84,7 +84,7 @@ const RegisterWithEmailScreen = () => {
           <TouchableOpacity
             style={{
               ...styles.signInButton,
-              opacity: isEmailInputFilled && isPasswordInputFilled ? 1 : 0.4,
+              opacity: isEmailInputFilled && isPasswordInputFilled ? 1 : 0.5,
             }}
             disabled={!isEmailInputFilled || !isPasswordInputFilled}
             onPress={navigateToCheckYourEmail}

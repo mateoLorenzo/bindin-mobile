@@ -40,7 +40,7 @@ const ResetPasswordScreen = () => {
   };
 
   const confirmPasswordReset = () => {
-    console.log("confirmPasswordReset");
+    router.navigate("/(home)");
   };
 
   return (
@@ -120,7 +120,7 @@ const ResetPasswordScreen = () => {
       >
         <View style={styles.signInButtonContainer}>
           <TouchableOpacity
-            style={{ ...styles.signInButton, opacity: areAllInputsFilled ? 1 : 0.4 }}
+            style={{ ...styles.signInButton, opacity: areAllInputsFilled ? 1 : 0.5 }}
             disabled={!areAllInputsFilled}
             onPress={confirmPasswordReset}
           >
