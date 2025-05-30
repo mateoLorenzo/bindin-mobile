@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -15,15 +16,19 @@ export default function RootLayout() {
     PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
   });
 
+  const queryClient = new QueryClient();
+
   if (!fontsLoaded) return null;
   return (
-    <View style={{ flex: 1 }}>
-      <StatusBar style="light" />
-      <Stack>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-        <Stack.Screen name="(home)" options={{ headerShown: false }} />
-      </Stack>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={{ flex: 1 }}>
+        <StatusBar style="light" />
+        <Stack>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        </Stack>
+      </View>
+    </QueryClientProvider>
   );
 }

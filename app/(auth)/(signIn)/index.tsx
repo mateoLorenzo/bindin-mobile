@@ -1,7 +1,10 @@
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -10,10 +13,51 @@ import {
   View,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
+import axios, { isAxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+
+const handleSignIn = async (email: string, password: string) => {
+  try {
+    const user = { login: email, password: password };
+    const response = await axios.post("http://localhost:3000/users/sign_in", { user });
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) throw error.response?.data;
+    throw error;
+  }
+};
 
 const SignInScreen = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLoginSuccess = () => {
+    setEmail("");
+    setPassword("");
+    router.navigate("/(home)");
+  };
+
+  const handleLoginError = (error: any) => {
+    if (error?.code === "wu") {
+      setErrorMessage("Credenciales invalidas");
+    } else {
+      setErrorMessage("Error inesperado");
+    }
+  };
+
+  const { mutate: requestSignIn, isPending } = useMutation({
+    mutationKey: ["signIn"],
+    mutationFn: () => handleSignIn(email, password),
+    onSuccess: handleLoginSuccess,
+    onError: handleLoginError,
+  });
+
+  const onSubmit = () => {
+    requestSignIn();
+  };
 
   const goBack = () => {
     router.back();
@@ -23,95 +67,124 @@ const SignInScreen = () => {
     setShowPassword(!showPassword);
   };
 
-  const navigateToHome = () => {
-    router.navigate("/(home)");
+  const onChangeEmail = (text: string) => {
+    setErrorMessage("");
+    setEmail(text);
+  };
+
+  const onChangePassword = (text: string) => {
+    setErrorMessage("");
+    setPassword(text);
   };
 
   return (
-    <ScrollView bounces={false}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack}>
-            <Ionicons name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
-          <View style={styles.titleContainer}>
-            <Text variant="title">Ingresa a tu cuenta</Text>
-          </View>
-          <View style={styles.authButtonsContainer}>
-            <TouchableOpacity style={styles.authButton}>
-              <Ionicons name="logo-google" size={20} color="#fff" style={styles.authIcon} />
-              <Text variant="button">Ingresa con Google</Text>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <ScrollView bounces={false}>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={goBack}>
+              <Ionicons name="arrow-back" size={24} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.authButton}>
-              <Ionicons name="logo-twitch" size={20} color="#fff" style={styles.authIcon} />
-              <Text variant="button">Ingresa con Twitch</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.authButton}>
-              <FontAwesome6 name="discord" size={18} color="#fff" style={styles.authIcon} />
-              <Text variant="button">Ingresa con Discord</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.sectionDivider}>
-          <View style={styles.sectionDividerLine} />
-          <Text style={styles.sectionDividerText}>o</Text>
-          <View style={styles.sectionDividerLine} />
-        </View>
-
-        <View style={styles.emailAuthContainer}>
-          <View style={styles.emailInputGroup}>
-            <Text style={styles.emailInputGroupLabel} variant="label">
-              Correo electrónico
-            </Text>
-            <TextInput
-              style={styles.emailAuthInput}
-              placeholder="Ejemplo@gmail.com"
-              placeholderTextColor="#9CA3AF"
-              keyboardType="email-address"
-            />
-          </View>
-
-          <View style={styles.emailInputGroup}>
-            <Text style={styles.emailInputGroupLabel} variant="label">
-              Contraseña
-            </Text>
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                style={[styles.emailAuthInput, styles.passwordInput]}
-                placeholder="***********"
-                placeholderTextColor="#9CA3AF"
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
-                <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+            <View style={styles.titleContainer}>
+              <Text variant="title">Ingresa a tu cuenta</Text>
+            </View>
+            <View style={styles.authButtonsContainer}>
+              <TouchableOpacity style={styles.authButton}>
+                <Ionicons name="logo-google" size={20} color="#fff" style={styles.authIcon} />
+                <Text variant="button">Ingresa con Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.authButton}>
+                <Ionicons name="logo-twitch" size={20} color="#fff" style={styles.authIcon} />
+                <Text variant="button">Ingresa con Twitch</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.authButton}>
+                <FontAwesome6 name="discord" size={18} color="#fff" style={styles.authIcon} />
+                <Text variant="button">Ingresa con Discord</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          <View style={styles.forgotPasswordContainer}>
-            <Link href="/ForgotPassword">
-              <Text style={styles.forgotPasswordText} variant="button">
-                ¿Olvidaste tu contraseña?
-              </Text>
-            </Link>
+          <View style={styles.sectionDivider}>
+            <View style={styles.sectionDividerLine} />
+            <Text style={styles.sectionDividerText}>o</Text>
+            <View style={styles.sectionDividerLine} />
           </View>
 
-          <View style={styles.signInButtonContainer}>
-            <TouchableOpacity style={styles.signInButton} onPress={navigateToHome}>
-              <Text style={styles.signInButtonText} variant="button">
-                Continuar
+          <View style={styles.emailAuthContainer}>
+            <View style={styles.emailInputGroup}>
+              <Text style={styles.emailInputGroupLabel} variant="label">
+                Correo electrónico
               </Text>
+              <TextInput
+                style={styles.emailAuthInput}
+                placeholder="Ejemplo@gmail.com"
+                placeholderTextColor="#9CA3AF"
+                keyboardType="email-address"
+                value={email}
+                onChangeText={onChangeEmail}
+              />
+            </View>
+
+            <View style={styles.emailInputGroup}>
+              <Text style={styles.emailInputGroupLabel} variant="label">
+                Contraseña
+              </Text>
+              <View style={styles.passwordInputContainer}>
+                <TextInput
+                  style={[styles.emailAuthInput, styles.passwordInput]}
+                  placeholder="***********"
+                  placeholderTextColor="#9CA3AF"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={onChangePassword}
+                />
+                <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+                  <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.forgotPasswordContainer}>
+              <Link href="/ForgotPassword">
+                <Text style={styles.forgotPasswordText} variant="button">
+                  ¿Olvidaste tu contraseña?
+                </Text>
+              </Link>
+            </View>
+
+            <TouchableOpacity
+              style={{ ...styles.signInButton, opacity: !email || !password ? 0.5 : 1 }}
+              onPress={onSubmit}
+              disabled={!email || !password}
+            >
+              {isPending && <ActivityIndicator size="small" color="#121212" />}
+
+              {!isPending && (
+                <Text style={styles.signInButtonText} variant="button">
+                  Continuar
+                </Text>
+              )}
             </TouchableOpacity>
+            {errorMessage && (
+              <Text style={styles.errorText} variant="button">
+                {errorMessage}
+              </Text>
+            )}
           </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  keyboardAvoidingView: {
     flex: 1,
   },
   header: {
@@ -201,19 +274,25 @@ const styles = StyleSheet.create({
     color: "#C084FC",
   },
   signInButtonContainer: {
-    alignItems: "center",
     marginTop: 20,
   },
   signInButton: {
+    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
     borderRadius: 100,
     backgroundColor: "#C084FC",
     width: "100%",
+    height: 50,
   },
   signInButtonText: {
     color: "#121212",
+  },
+  errorText: {
+    color: "#DD2B53",
+    textAlign: "center",
+    marginTop: 5,
+    fontFamily: "OpenSauceOneMedium",
   },
 });
 
