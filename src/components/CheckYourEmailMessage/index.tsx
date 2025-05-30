@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
+import { AppButton as Button } from "../AppButton";
 
 interface IProps {
   email: string;
@@ -37,20 +38,23 @@ export const CheckYourEmailMessage = ({
           <Text style={styles.userEmail} variant="body">
             {email}
           </Text>
-          <TouchableOpacity style={styles.resendLinkContainer} onPress={onResendEmail}>
-            <Text style={styles.resendLink} variant="button">
-              Reenviar correo
-            </Text>
-          </TouchableOpacity>
+          <Button
+            label="Reenviar correo"
+            onPress={onResendEmail}
+            variant="text"
+            style={styles.resendLinkContainer}
+            labelStyle={styles.resendLink}
+          />
         </View>
       </View>
 
       <View style={styles.openEmailContainer}>
-        <TouchableOpacity style={styles.openEmailButton} onPress={onOpenEmail}>
-          <Text variant="button" style={styles.openEmailText}>
-            Abrir correo
-          </Text>
-        </TouchableOpacity>
+        <Button
+          label="Abrir correo"
+          onPress={onOpenEmail}
+          variant="primary"
+          style={styles.openEmailButton}
+        />
       </View>
     </SafeAreaView>
   );
@@ -67,10 +71,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: "flex-start",
-  },
-  backButtonIcon: {
-    width: 20,
-    height: 15,
   },
   title: {
     paddingVertical: 10,
@@ -93,10 +93,6 @@ const styles = StyleSheet.create({
   emailIconContainer: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  emailIcon: {
-    width: 70,
-    height: 70,
   },
   emailNotificationDot: {
     width: 25,
@@ -123,7 +119,6 @@ const styles = StyleSheet.create({
     color: "#C084FC",
   },
   openEmailContainer: {
-    alignItems: "center",
     justifyContent: "flex-end",
     flex: 1,
     paddingHorizontal: 20,
@@ -136,8 +131,5 @@ const styles = StyleSheet.create({
     borderRadius: 23.5,
     backgroundColor: "#C084FC",
     width: "100%",
-  },
-  openEmailText: {
-    color: "#121212",
   },
 });

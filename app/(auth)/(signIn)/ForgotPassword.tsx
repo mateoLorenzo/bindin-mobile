@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
+import { AppButton as Button } from "../../../src/components/AppButton";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -33,46 +34,43 @@ const ForgotPasswordScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={navigateBack}>
-            <Ionicons name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
-
-          <View style={styles.titleContainer}>
-            <Text variant="title">Recupera tu contraseña</Text>
-          </View>
-        </View>
-
-        <View style={styles.emailAuthContainer}>
-          <Text style={styles.emailInputGroupLabel} variant="label">
-            Correo electrónico
-          </Text>
-          <TextInput
-            style={styles.emailAuthInput}
-            placeholder="Ejemplo@gmail.com"
-            placeholderTextColor="#9CA3AF"
-            keyboardType="email-address"
-            autoFocus
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-          />
-        </View>
-
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.continueButtonSectionContainer}
         >
-          <View style={styles.signInButtonContainer}>
-            <TouchableOpacity
-              style={[styles.signInButton, { opacity: isEmailInputFilled ? 1 : 0.4 }]}
-              disabled={!isEmailInputFilled}
-              onPress={naviateToCheckYourEmail}
-            >
-              <Text style={styles.signInButtonText} variant="button">
-                Continuar
-              </Text>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={navigateBack}>
+              <Ionicons name="arrow-back" size={24} color="#fff" />
             </TouchableOpacity>
+
+            <View style={styles.titleContainer}>
+              <Text variant="title">Recupera tu contraseña</Text>
+            </View>
+          </View>
+
+          <View style={styles.emailAuthContainer}>
+            <Text style={styles.emailInputGroupLabel} variant="label">
+              Correo electrónico
+            </Text>
+            <TextInput
+              style={styles.emailAuthInput}
+              placeholder="Ejemplo@gmail.com"
+              placeholderTextColor="#9CA3AF"
+              keyboardType="email-address"
+              autoFocus
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={styles.signInButtonContainer}>
+            <Button
+              label="Continuar"
+              onPress={naviateToCheckYourEmail}
+              disabled={!isEmailInputFilled}
+              variant="primary"
+            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -123,7 +121,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signInButtonContainer: {
-    alignItems: "center",
     justifyContent: "flex-end",
     flex: 1,
     paddingHorizontal: 20,

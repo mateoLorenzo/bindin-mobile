@@ -1,7 +1,8 @@
 import { router } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { AppText as Text } from "../../src/components/AppText";
+import { AppButton as Button } from "../../src/components/AppButton";
 const AppLogo = require("../../assets/images/app-logo.png");
 
 const WelcomeScreen = () => {
@@ -26,24 +27,25 @@ const WelcomeScreen = () => {
         </Text>
       </View>
 
-      <View style={styles.signInButtonContainer}>
-        <TouchableOpacity style={styles.signInButton} onPress={navigateToSignIn}>
-          <Text style={styles.signInButtonText} variant="button">
-            Iniciar sesión
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.signUpButton} onPress={navigateToSignUp}>
-          <Text style={styles.signUpButtonText} variant="button">
-            Registrarme
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.guestContainer} onPress={navigateToHome}>
-          <Text style={styles.guestText} variant="button">
-            Continuar como invitado
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.signInButtonsContainer}>
+        <Button
+          label="Iniciar sesión"
+          onPress={navigateToSignIn}
+          variant="secondary"
+          style={styles.signInButton}
+        />
+        <Button
+          label="Registrarme"
+          onPress={navigateToSignUp}
+          variant="primary"
+          style={styles.signUpButton}
+        />
+        <Button
+          label="Continuar como invitado"
+          onPress={navigateToHome}
+          variant="text"
+          style={styles.guestContainer}
+        />
       </View>
     </View>
   );
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#ADADAD",
   },
-  signInButtonContainer: {
+  signInButtonsContainer: {
     alignItems: "center",
     gap: 10,
     width: "100%",

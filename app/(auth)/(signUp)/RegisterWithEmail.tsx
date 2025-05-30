@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
+import { AppButton as Button } from "../../../src/components/AppButton";
 
 const RegisterWithEmailScreen = () => {
   const [email, setEmail] = useState("");
@@ -81,19 +82,12 @@ const RegisterWithEmailScreen = () => {
         </View>
 
         <View style={styles.signInButtonContainer}>
-          <TouchableOpacity
-            style={{
-              ...styles.signInButton,
-              opacity: isEmailInputFilled && isPasswordInputFilled ? 1 : 0.5,
-            }}
-            disabled={!isEmailInputFilled || !isPasswordInputFilled}
+          <Button
+            label="Continuar"
             onPress={navigateToCheckYourEmail}
-          >
-            <Text style={styles.signInButtonText} variant="button">
-              Continuar
-            </Text>
-          </TouchableOpacity>
-
+            disabled={!isEmailInputFilled || !isPasswordInputFilled}
+            variant="primary"
+          />
           <Text style={styles.termsAndPrivacyText} variant="label">
             Al registrarte aceptas nuestros <Text variant="link">Términos</Text> y{" "}
             <Text variant="link">Política de Privacidad</Text>
@@ -154,17 +148,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     paddingHorizontal: 20,
     gap: 10,
-  },
-  signInButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 23.5,
-    backgroundColor: "#C084FC",
-    width: "100%",
-  },
-  signInButtonText: {
-    color: "#121212",
   },
   termsAndPrivacyText: {
     color: "#ADADAD",

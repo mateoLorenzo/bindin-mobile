@@ -1,9 +1,8 @@
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
-  ActivityIndicator,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -15,6 +14,9 @@ import {
 import { AppText as Text } from "../../../src/components/AppText";
 import axios, { isAxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { AppButton as Button } from "../../../src/components/AppButton";
+import { SOCIAL_PROVIDERS } from "@/src/constants";
+import { SocialProvider } from "@/src/types";
 
 const handleSignIn = async (email: string, password: string) => {
   try {
@@ -77,6 +79,35 @@ const SignInScreen = () => {
     setPassword(text);
   };
 
+  const handleGoogleLogin = () => {
+    // Add google oauth
+    router.navigate("/(home)");
+  };
+
+  const handleTwitchLogin = () => {
+    // Add twitch oauth
+    router.navigate("/(home)");
+  };
+
+  const handleDiscordLogin = () => {
+    // Add discord oauth
+    router.navigate("/(home)");
+  };
+
+  const handleSocialLogin = (provider: SocialProvider) => {
+    switch (provider) {
+      case "google":
+        handleGoogleLogin();
+        break;
+      case "twitch":
+        handleTwitchLogin();
+        break;
+      case "discord":
+        handleDiscordLogin();
+        break;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -92,18 +123,15 @@ const SignInScreen = () => {
               <Text variant="title">Ingresa a tu cuenta</Text>
             </View>
             <View style={styles.authButtonsContainer}>
-              <TouchableOpacity style={styles.authButton}>
-                <Ionicons name="logo-google" size={20} color="#fff" style={styles.authIcon} />
-                <Text variant="button">Ingresa con Google</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.authButton}>
-                <Ionicons name="logo-twitch" size={20} color="#fff" style={styles.authIcon} />
-                <Text variant="button">Ingresa con Twitch</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.authButton}>
-                <FontAwesome6 name="discord" size={18} color="#fff" style={styles.authIcon} />
-                <Text variant="button">Ingresa con Discord</Text>
-              </TouchableOpacity>
+              {SOCIAL_PROVIDERS.map((provider) => (
+                <Button
+                  key={provider.provider}
+                  variant="social"
+                  label={`Ingresa con ${provider.label}`}
+                  onPress={() => handleSocialLogin(provider.provider)}
+                  socialProvider={provider.provider}
+                />
+              ))}
             </View>
           </View>
 
@@ -155,19 +183,14 @@ const SignInScreen = () => {
               </Link>
             </View>
 
-            <TouchableOpacity
-              style={{ ...styles.signInButton, opacity: !email || !password ? 0.5 : 1 }}
+            <Button
+              label="Continuar"
               onPress={onSubmit}
-              disabled={!email || !password}
-            >
-              {isPending && <ActivityIndicator size="small" color="#121212" />}
-
-              {!isPending && (
-                <Text style={styles.signInButtonText} variant="button">
-                  Continuar
-                </Text>
-              )}
-            </TouchableOpacity>
+              disabled={!email || !password || isPending}
+              variant="primary"
+              loading={isPending}
+              style={styles.signInButton}
+            />
             {errorMessage && (
               <Text style={styles.errorText} variant="button">
                 {errorMessage}
@@ -194,10 +217,6 @@ const styles = StyleSheet.create({
   backButton: {
     alignSelf: "flex-start",
   },
-  backButtonIcon: {
-    width: 20,
-    height: 15,
-  },
   titleContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -207,19 +226,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     gap: 10,
     width: "100%",
-  },
-  authButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 18,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-  },
-  authIcon: {
-    position: "absolute",
-    left: 20,
   },
   sectionDivider: {
     flexDirection: "row",
@@ -273,20 +279,8 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     color: "#C084FC",
   },
-  signInButtonContainer: {
-    marginTop: 20,
-  },
   signInButton: {
     marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 100,
-    backgroundColor: "#C084FC",
-    width: "100%",
-    height: 50,
-  },
-  signInButtonText: {
-    color: "#121212",
   },
   errorText: {
     color: "#DD2B53",

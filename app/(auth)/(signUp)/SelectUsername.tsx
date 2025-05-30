@@ -13,9 +13,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppText as Text } from "../../../src/components/AppText";
 import debounce from "lodash.debounce";
+import { AppButton as Button } from "../../../src/components/AppButton";
+import { SOCIAL_PROVIDERS } from "@/src/constants";
+import { SocialProvider } from "@/src/types";
 
 const SelectUsernameScreen = () => {
   const [username, setUsername] = useState("");
@@ -58,6 +62,34 @@ const SelectUsernameScreen = () => {
   const handleOpenBottomSheet = () => {
     bottomSheetRef.current?.expand();
     Keyboard.dismiss();
+  };
+
+  const handleGoogleLogin = () => {
+    router.navigate("/(onboarding)");
+  };
+
+  const handleTwitchLogin = () => {
+    router.navigate("/(onboarding)");
+  };
+
+  const handleDiscordLogin = () => {
+    router.navigate("/(onboarding)");
+  };
+
+  const handleSocialLogin = (provider: SocialProvider) => {
+    switch (provider) {
+      case "google":
+        handleGoogleLogin();
+        break;
+      case "twitch":
+        handleTwitchLogin();
+        break;
+      case "discord":
+        handleDiscordLogin();
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -113,18 +145,12 @@ const SelectUsernameScreen = () => {
               )}
             </View>
 
-            <TouchableOpacity
-              style={{
-                ...styles.signInButton,
-                opacity: isUsernameInputFilled && usernameAvailable ? 1 : 0.4,
-              }}
-              disabled={!isUsernameInputFilled || !usernameAvailable}
+            <Button
+              label="Continuar"
               onPress={handleOpenBottomSheet}
-            >
-              <Text style={styles.signInButtonText} variant="button">
-                Continuar
-              </Text>
-            </TouchableOpacity>
+              disabled={!isUsernameInputFilled || !usernameAvailable}
+              variant="primary"
+            />
           </View>
 
           <BottomSheet
@@ -152,22 +178,21 @@ const SelectUsernameScreen = () => {
               </Text>
 
               <View style={styles.authButtonsContainer}>
-                <TouchableOpacity style={styles.authButton}>
-                  <Ionicons name="logo-google" size={20} color="#fff" style={styles.authIcon} />
-                  <Text variant="button">Ingresa con Google</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.authButton}>
-                  <Ionicons name="logo-twitch" size={20} color="#fff" style={styles.authIcon} />
-                  <Text variant="button">Ingresa con Twitch</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.authButton}>
-                  <FontAwesome6 name="discord" size={18} color="#fff" style={styles.authIcon} />
-                  <Text variant="button">Ingresa con Discord</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.authButton} onPress={navigateToCheckYourEmail}>
-                  <Ionicons name="mail" size={22} color="#fff" style={styles.authIcon} />
-                  <Text variant="button">Ingresa con tu correo</Text>
-                </TouchableOpacity>
+                {SOCIAL_PROVIDERS.map((provider) => (
+                  <Button
+                    key={provider.provider}
+                    label={`Ingresa con ${provider.label}`}
+                    onPress={() => handleSocialLogin(provider.provider)}
+                    variant="social"
+                    socialProvider={provider.provider}
+                  />
+                ))}
+                <Button
+                  label="Ingresa con tu correo"
+                  onPress={navigateToCheckYourEmail}
+                  variant="secondary"
+                  leftIcon={<Ionicons name="mail" size={22} color="#fff" />}
+                />
               </View>
             </BottomSheetView>
           </BottomSheet>
@@ -217,17 +242,6 @@ const styles = StyleSheet.create({
   usernameInputIcon: {
     position: "absolute",
     right: 20,
-  },
-  signInButton: {
-    alignItems: "center",
-    backgroundColor: "#C084FC",
-    borderRadius: 100,
-    justifyContent: "center",
-    paddingVertical: 16,
-    width: "100%",
-  },
-  signInButtonText: {
-    color: "#121212",
   },
   bottomSheetBackground: {
     backgroundColor: "#222222",

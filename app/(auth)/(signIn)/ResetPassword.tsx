@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
+import { AppButton as Button } from "../../../src/components/AppButton";
 
 const ResetPasswordScreen = () => {
   const [showCode, setShowCode] = useState(false);
@@ -119,15 +120,12 @@ const ResetPasswordScreen = () => {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.signInButtonContainer}>
-          <TouchableOpacity
-            style={{ ...styles.signInButton, opacity: areAllInputsFilled ? 1 : 0.5 }}
-            disabled={!areAllInputsFilled}
+          <Button
+            label="Confirmar"
             onPress={confirmPasswordReset}
-          >
-            <Text style={styles.signInButtonText} variant="button">
-              Confirmar
-            </Text>
-          </TouchableOpacity>
+            disabled={!areAllInputsFilled}
+            variant="primary"
+          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -185,17 +183,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-  },
-  signInButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 23.5,
-    backgroundColor: "#C084FC",
-    width: "100%",
-  },
-  signInButtonText: {
-    color: "#121212",
   },
 });
 
