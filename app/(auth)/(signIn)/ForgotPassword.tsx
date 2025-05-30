@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
+import colors from "@/src/theme/colors";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -40,7 +41,7 @@ const ForgotPasswordScreen = () => {
         >
           <View style={styles.header}>
             <TouchableOpacity style={styles.backButton} onPress={navigateBack}>
-              <Ionicons name="arrow-back" size={24} color="#fff" />
+              <Ionicons name="arrow-back" size={24} color={colors.icon.primary} />
             </TouchableOpacity>
 
             <View style={styles.titleContainer}>
@@ -55,7 +56,7 @@ const ForgotPasswordScreen = () => {
             <TextInput
               style={styles.emailAuthInput}
               placeholder="Ejemplo@gmail.com"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={colors.input.placeholder}
               keyboardType="email-address"
               autoFocus
               value={email}
@@ -89,10 +90,6 @@ const styles = StyleSheet.create({
   backButton: {
     alignSelf: "flex-start",
   },
-  backButtonIcon: {
-    width: 20,
-    height: 15,
-  },
   titleContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -107,12 +104,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   emailInputGroupLabel: {
-    color: "#fff",
+    color: colors.text.primary,
   },
   emailAuthInput: {
-    color: "#fff",
+    color: colors.input.primary,
     borderWidth: 1,
-    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderColor: colors.border.secondary,
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
@@ -125,17 +122,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-  },
-  signInButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 100,
-    backgroundColor: "#C084FC",
-    width: "100%",
-  },
-  signInButtonText: {
-    color: "#121212",
   },
 });
 

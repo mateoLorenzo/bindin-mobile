@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
+import colors from "@/src/theme/colors";
 
 const RegisterWithEmailScreen = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ const RegisterWithEmailScreen = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={goBack}>
-            <Ionicons name="arrow-back" size={25} color="#fff" />
+            <Ionicons name="arrow-back" size={25} color={colors.icon.primary} />
           </TouchableOpacity>
 
           <Text style={styles.title} variant="title">
@@ -53,7 +54,7 @@ const RegisterWithEmailScreen = () => {
             <TextInput
               style={styles.emailAuthInput}
               placeholder="Ejemplo@gmail.com"
-              placeholderTextColor="#ADADAD"
+              placeholderTextColor={colors.input.placeholder}
               keyboardType="email-address"
               autoFocus
               value={email}
@@ -69,13 +70,17 @@ const RegisterWithEmailScreen = () => {
               <TextInput
                 style={{ ...styles.emailAuthInput, ...styles.passwordInput }}
                 placeholder="***********"
-                placeholderTextColor="#ADADAD"
+                placeholderTextColor={colors.input.placeholder}
                 secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={setPassword}
               />
               <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
-                <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color={colors.icon.secondary}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -122,12 +127,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   emailInputGroupLabel: {
-    color: "#fff",
+    color: colors.input.primary,
   },
   emailAuthInput: {
-    color: "#fff",
+    color: colors.input.primary,
     borderWidth: 1,
-    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderColor: colors.border.secondary,
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   termsAndPrivacyText: {
-    color: "#ADADAD",
+    color: colors.text.secondary,
     textAlign: "center",
   },
 });

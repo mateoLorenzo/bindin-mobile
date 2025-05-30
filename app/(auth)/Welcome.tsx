@@ -3,6 +3,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { AppText as Text } from "../../src/components/AppText";
 import { AppButton as Button } from "../../src/components/AppButton";
+import colors from "@/src/theme/colors";
 const AppLogo = require("../../assets/images/app-logo.png");
 
 const WelcomeScreen = () => {
@@ -34,12 +35,7 @@ const WelcomeScreen = () => {
           variant="secondary"
           style={styles.signInButton}
         />
-        <Button
-          label="Registrarme"
-          onPress={navigateToSignUp}
-          variant="primary"
-          style={styles.signUpButton}
-        />
+        <Button label="Registrarme" onPress={navigateToSignUp} variant="primary" />
         <Button
           label="Continuar como invitado"
           onPress={navigateToHome}
@@ -63,55 +59,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
   },
-  appLogoContainer: {
-    alignItems: "center",
-    gap: 5,
-  },
   appLogo: {
     width: 270,
   },
   appLogoText: {
     fontSize: 19,
     fontWeight: "600",
-    color: "#ADADAD",
+    color: colors.text.secondary,
   },
   signInButtonsContainer: {
     alignItems: "center",
     gap: 10,
     width: "100%",
   },
-  signUpButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 15,
-    borderRadius: 100,
-    width: "100%",
-    backgroundColor: "#C084FC",
-    borderWidth: 1,
-    borderColor: "rgba(228, 230, 234, 0.2)",
-  },
-  signUpButtonText: {
-    color: "#121212",
-  },
   signInButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 15,
-    borderRadius: 100,
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#fff",
-  },
-  signInButtonText: {
-    color: "#fff",
+    borderColor: colors.border.quaternary,
   },
   guestContainer: {
     alignItems: "center",
     justifyContent: "center",
     marginTop: 5,
-  },
-  guestText: {
-    color: "#9CA3AF",
   },
 });
 

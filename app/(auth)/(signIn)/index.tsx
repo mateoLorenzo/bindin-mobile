@@ -17,6 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import { SOCIAL_PROVIDERS } from "@/src/constants";
 import { SocialProvider } from "@/src/types";
+import colors from "@/src/theme/colors";
 
 const handleSignIn = async (email: string, password: string) => {
   try {
@@ -117,7 +118,7 @@ const SignInScreen = () => {
         <ScrollView bounces={false}>
           <View style={styles.header}>
             <TouchableOpacity style={styles.backButton} onPress={goBack}>
-              <Ionicons name="arrow-back" size={24} color="#fff" />
+              <Ionicons name="arrow-back" size={24} color={colors.icon.primary} />
             </TouchableOpacity>
             <View style={styles.titleContainer}>
               <Text variant="title">Ingresa a tu cuenta</Text>
@@ -149,7 +150,7 @@ const SignInScreen = () => {
               <TextInput
                 style={styles.emailAuthInput}
                 placeholder="Ejemplo@gmail.com"
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colors.input.placeholder}
                 keyboardType="email-address"
                 value={email}
                 onChangeText={onChangeEmail}
@@ -164,13 +165,17 @@ const SignInScreen = () => {
                 <TextInput
                   style={[styles.emailAuthInput, styles.passwordInput]}
                   placeholder="***********"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={colors.input.placeholder}
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={onChangePassword}
                 />
                 <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
-                  <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+                  <Ionicons
+                    name={showPassword ? "eye" : "eye-off"}
+                    size={24}
+                    color={colors.icon.secondary}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -237,10 +242,10 @@ const styles = StyleSheet.create({
   sectionDividerLine: {
     width: "40%",
     height: 1,
-    backgroundColor: "#ADADAD",
+    backgroundColor: colors.background.divider,
   },
   sectionDividerText: {
-    color: "#ADADAD",
+    color: colors.text.secondary,
   },
   emailAuthContainer: {
     paddingHorizontal: 20,
@@ -251,13 +256,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   emailInputGroupLabel: {
-    color: "#fff",
+    color: colors.text.primary,
   },
   emailAuthInput: {
     fontWeight: "500",
-    color: "#fff",
+    color: colors.input.primary,
     borderWidth: 1,
-    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderColor: colors.border.secondary,
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
@@ -277,13 +282,13 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   forgotPasswordText: {
-    color: "#C084FC",
+    color: colors.brand.primary,
   },
   signInButton: {
     marginTop: 20,
   },
   errorText: {
-    color: "#DD2B53",
+    color: colors.brand.error,
     textAlign: "center",
     marginTop: 5,
     fontFamily: "OpenSauceOneMedium",

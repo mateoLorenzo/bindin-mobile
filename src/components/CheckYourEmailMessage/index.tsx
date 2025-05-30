@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../AppButton";
+import colors from "@/src/theme/colors";
 
 interface IProps {
   email: string;
@@ -20,7 +21,7 @@ export const CheckYourEmailMessage = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={colors.icon.primary} />
         </TouchableOpacity>
 
         <Text style={styles.title} variant="title">
@@ -32,8 +33,10 @@ export const CheckYourEmailMessage = ({
             Te enviamos un enlace de verificacion a:
           </Text>
           <View style={styles.emailIconContainer}>
-            <Ionicons name="mail-outline" size={70} color="#fff" />
-            <View style={styles.emailNotificationDot} />
+            <Ionicons name="mail-outline" size={70} color={colors.icon.primary} />
+            <View style={styles.notificationDotContainer}>
+              <View style={styles.notificationDot} />
+            </View>
           </View>
           <Text style={styles.userEmail} variant="body">
             {email}
@@ -49,12 +52,7 @@ export const CheckYourEmailMessage = ({
       </View>
 
       <View style={styles.openEmailContainer}>
-        <Button
-          label="Abrir correo"
-          onPress={onOpenEmail}
-          variant="primary"
-          style={styles.openEmailButton}
-        />
+        <Button label="Abrir correo" onPress={onOpenEmail} variant="primary" />
       </View>
     </SafeAreaView>
   );
@@ -62,7 +60,7 @@ export const CheckYourEmailMessage = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#121212",
+    backgroundColor: colors.background.primary,
     flex: 1,
   },
   header: {
@@ -81,34 +79,41 @@ const styles = StyleSheet.create({
     gap: 20,
     width: "100%",
     borderWidth: 0.5,
-    borderColor: "#E4E6EA40",
+    borderColor: colors.border.tertiary,
     borderRadius: 10,
     marginTop: 15,
     paddingHorizontal: 20,
+    backgroundColor: colors.background.primary,
   },
   verificationMessage: {
-    color: "#ADADAD",
+    color: colors.text.secondary,
     fontFamily: "OpenSauceOneRegular",
   },
   emailIconContainer: {
     justifyContent: "center",
     alignItems: "center",
   },
-  emailNotificationDot: {
+  notificationDotContainer: {
     width: 25,
     height: 25,
+    backgroundColor: colors.background.primary,
     borderRadius: 100,
-    borderWidth: 5,
-    borderColor: "#121212",
-    backgroundColor: "#C084FC",
+    justifyContent: "center",
+    alignItems: "center",
     position: "absolute",
     top: 3,
     right: -5,
   },
+  notificationDot: {
+    width: 15,
+    height: 15,
+    backgroundColor: colors.brand.primary,
+    borderRadius: 100,
+  },
   userEmail: {
     fontSize: 19,
     fontWeight: "600",
-    color: "#fff",
+    color: colors.text.primary,
     fontFamily: "OpenSauceOneBold",
     textAlign: "center",
   },
@@ -116,20 +121,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   resendLink: {
-    color: "#C084FC",
+    color: colors.text.link,
   },
   openEmailContainer: {
     justifyContent: "flex-end",
     flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-  },
-  openEmailButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 23.5,
-    backgroundColor: "#C084FC",
-    width: "100%",
   },
 });

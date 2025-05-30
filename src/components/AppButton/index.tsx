@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AppText as Text } from "../AppText";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import colors from "@/src/theme/colors";
 
 type ButtonVariant = "primary" | "secondary" | "social" | "text";
 type SocialProvider = "google" | "twitch" | "discord" | null;
@@ -44,11 +45,11 @@ export const AppButton: React.FC<AppButtonProps> = ({
 
     switch (socialProvider) {
       case "google":
-        return <Ionicons name="logo-google" size={20} color="#fff" />;
+        return <Ionicons name="logo-google" size={20} color={colors.icon.primary} />;
       case "twitch":
-        return <Ionicons name="logo-twitch" size={20} color="#fff" />;
+        return <Ionicons name="logo-twitch" size={20} color={colors.icon.primary} />;
       case "discord":
-        return <FontAwesome6 name="discord" size={18} color="#fff" />;
+        return <FontAwesome6 name="discord" size={18} color={colors.icon.primary} />;
       default:
         return null;
     }
@@ -98,7 +99,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
         <View style={[styles.iconContainer, styles.socialIconContainer]}>{finalLeftIcon}</View>
       )}
       {loading ? (
-        <ActivityIndicator size="small" color="#212121" />
+        <ActivityIndicator size="small" color={colors.brand.tertiary} />
       ) : (
         <Text variant="button" style={[getTextStyle(), labelStyle]}>
           {label}
@@ -121,17 +122,15 @@ const styles = StyleSheet.create({
     minHeight: 50,
   },
   primaryButton: {
-    backgroundColor: "#C084FC",
+    backgroundColor: colors.brand.primary,
   },
   secondaryButton: {
-    backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderColor: colors.border.tertiary,
   },
   socialButton: {
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-    backgroundColor: "transparent",
+    borderColor: colors.border.tertiary,
   },
   textButton: {
     minHeight: undefined,
@@ -150,19 +149,19 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "OpenSauceOneSemiBold",
     fontSize: 14,
-    color: "#fff",
+    color: colors.text.primary,
   },
   primaryButtonText: {
-    color: "#121212",
+    color: colors.text.quaternary,
   },
   secondaryButtonText: {
-    color: "#E4E6EA",
+    color: colors.text.primary,
   },
   socialButtonText: {
-    color: "#fff",
+    color: colors.text.primary,
   },
   textButtonText: {
-    color: "#9CA3AF",
+    color: colors.text.tertiary,
   },
   iconContainer: {
     justifyContent: "center",

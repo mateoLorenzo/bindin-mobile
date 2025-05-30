@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FontAwesome6, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -20,6 +20,7 @@ import debounce from "lodash.debounce";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import { SOCIAL_PROVIDERS } from "@/src/constants";
 import { SocialProvider } from "@/src/types";
+import colors from "@/src/theme/colors";
 
 const SelectUsernameScreen = () => {
   const [username, setUsername] = useState("");
@@ -98,7 +99,7 @@ const SelectUsernameScreen = () => {
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
             <TouchableOpacity style={styles.backButton} onPress={goBack}>
-              <Ionicons name="arrow-back" size={25} color="#fff" />
+              <Ionicons name="arrow-back" size={25} color={colors.icon.primary} />
             </TouchableOpacity>
 
             <Text style={styles.title} variant="title">
@@ -116,22 +117,25 @@ const SelectUsernameScreen = () => {
                 style={styles.usernameInput}
                 placeholder="Nombre de usuario"
                 value={username}
-                // onChangeText={handleUsernameChange}
                 onChangeText={handleUsernameChange}
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={colors.input.placeholder}
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="done"
                 autoFocus
               />
               {isLoading && (
-                <ActivityIndicator size={24} color="#C084FC" style={styles.usernameInputIcon} />
+                <ActivityIndicator
+                  size={24}
+                  color={colors.brand.primary}
+                  style={styles.usernameInputIcon}
+                />
               )}
               {!isLoading && usernameAvailable === true && (
                 <MaterialCommunityIcons
                   name="check-circle"
                   size={24}
-                  color="#24B173"
+                  color={colors.brand.success}
                   style={styles.usernameInputIcon}
                 />
               )}
@@ -139,7 +143,7 @@ const SelectUsernameScreen = () => {
                 <MaterialCommunityIcons
                   name="close-circle"
                   size={24}
-                  color="#EF4444"
+                  color={colors.brand.error}
                   style={styles.usernameInputIcon}
                 />
               )}
@@ -191,7 +195,7 @@ const SelectUsernameScreen = () => {
                   label="Ingresa con tu correo"
                   onPress={navigateToCheckYourEmail}
                   variant="secondary"
-                  leftIcon={<Ionicons name="mail" size={22} color="#fff" />}
+                  leftIcon={<Ionicons name="mail" size={22} color={colors.icon.primary} />}
                 />
               </View>
             </BottomSheetView>
@@ -218,7 +222,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   subtitle: {
-    color: "#9CA3AF",
+    color: colors.text.tertiary,
+    fontFamily: "OpenSauceOneMedium",
+    fontSize: 14,
     marginTop: 5,
   },
   usernameContainer: {
@@ -230,10 +236,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   usernameInput: {
-    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderColor: colors.border.secondary,
     borderRadius: 100,
     borderWidth: 1,
-    color: "#fff",
+    color: colors.input.primary,
     fontSize: 14,
     paddingHorizontal: 20,
     paddingVertical: 18,
@@ -244,10 +250,10 @@ const styles = StyleSheet.create({
     right: 20,
   },
   bottomSheetBackground: {
-    backgroundColor: "#222222",
+    backgroundColor: colors.background.tertiary,
   },
   bottomSheetHandleIndicator: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: colors.background.quaternary,
   },
   bottomSheetContainer: {
     alignItems: "center",
@@ -256,7 +262,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   bottomSheetSubtitle: {
-    color: "#9CA3AF",
+    color: colors.text.tertiary,
+    fontFamily: "OpenSauceOneMedium",
     marginTop: 5,
   },
   authButtonsContainer: {
@@ -266,7 +273,7 @@ const styles = StyleSheet.create({
   },
   authButton: {
     alignItems: "center",
-    borderColor: "rgba(255, 255, 255, 0.2)",
+    borderColor: colors.border.tertiary,
     borderWidth: 1,
     borderRadius: 100,
     flexDirection: "row",

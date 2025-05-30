@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
+import colors from "@/src/theme/colors";
 
 const ResetPasswordScreen = () => {
   const [showCode, setShowCode] = useState(false);
@@ -48,7 +49,7 @@ const ResetPasswordScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={goBack}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={colors.icon.primary} />
         </TouchableOpacity>
 
         <Text style={styles.title} variant="title">
@@ -65,13 +66,17 @@ const ResetPasswordScreen = () => {
             <TextInput
               style={styles.codeAuthInput}
               placeholder="***********"
-              placeholderTextColor="#ADADAD"
+              placeholderTextColor={colors.input.placeholder}
               secureTextEntry={!showCode}
               value={code}
               onChangeText={setCode}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleCodeVisibility}>
-              <Ionicons name={showCode ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+              <Ionicons
+                name={showCode ? "eye" : "eye-off"}
+                size={24}
+                color={colors.icon.secondary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -84,13 +89,17 @@ const ResetPasswordScreen = () => {
             <TextInput
               style={styles.codeAuthInput}
               placeholder="***********"
-              placeholderTextColor="#ADADAD"
+              placeholderTextColor={colors.input.placeholder}
               secureTextEntry={!showNewPassword}
               value={newPassword}
               onChangeText={setNewPassword}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleNewPasswordVisibility}>
-              <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+              <Ionicons
+                name={showNewPassword ? "eye" : "eye-off"}
+                size={24}
+                color={colors.icon.secondary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -103,13 +112,17 @@ const ResetPasswordScreen = () => {
             <TextInput
               style={styles.codeAuthInput}
               placeholder="***********"
-              placeholderTextColor="#ADADAD"
+              placeholderTextColor={colors.input.placeholder}
               secureTextEntry={!showConfirmPassword}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
             <TouchableOpacity style={styles.eyeIcon} onPress={toggleConfirmPasswordVisibility}>
-              <Ionicons name={showConfirmPassword ? "eye" : "eye-off"} size={24} color="#ADADAD" />
+              <Ionicons
+                name={showConfirmPassword ? "eye" : "eye-off"}
+                size={24}
+                color={colors.icon.secondary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -155,12 +168,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   codeInputGroupLabel: {
-    color: "#fff",
+    color: colors.input.primary,
   },
   codeAuthInput: {
-    color: "#fff",
+    color: colors.input.primary,
     borderWidth: 1,
-    borderColor: "rgba(228, 230, 234, 0.1)",
+    borderColor: colors.border.secondary,
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 18,
