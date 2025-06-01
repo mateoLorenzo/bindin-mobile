@@ -21,26 +21,64 @@ import { AppButton as Button } from "../../../src/components/AppButton";
 import { SOCIAL_PROVIDERS } from "@/src/constants";
 import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
+import { useQuery } from "@tanstack/react-query";
+import axios, { isAxiosError } from "axios";
+
+const APP_STAGE_URL = "http://localhost:3000";
+
+const checkUsername = async (username: string) => {
+  try {
+    // Delay to always show at least 500ms of loading
+    const minDelay = new Promise((resolve) => setTimeout(resolve, 500));
+    const requestPromise = axios
+      .get(`${APP_STAGE_URL}/users/availability?username=${username}`, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((response) => response.data);
+    const [data] = await Promise.all([requestPromise, minDelay]);
+    return data.availability;
+  } catch (e) {
+    if (isAxiosError(e)) {
+      console.log("error.response.data from checkUsername", e.response?.data);
+    }
+    console.log("error from checkUsername", e);
+    return false;
+  }
+};
 
 const SelectUsernameScreen = () => {
   const [username, setUsername] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
   const isUsernameInputFilled = username.trim() !== "";
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["50%"], []);
 
+  const {
+    data,
+    isFetching: isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["check-username", username],
+    queryFn: () => checkUsername(username),
+    enabled: false,
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setUsernameAvailable(data);
+    }
+  }, [data]);
+
   const validateUsername = (value: string) => {
     if (value.trim() === "") return;
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setUsernameAvailable(true);
-    }, 1000);
+    setUsernameAvailable(null);
+    refetch();
   };
 
   const debouncedValidate = useRef(
-    debounce((value: string) => validateUsername(value), 1000)
+    debounce((value: string) => validateUsername(value), 500)
   ).current;
 
   useEffect(() => {
@@ -57,7 +95,10 @@ const SelectUsernameScreen = () => {
   };
 
   const navigateToCheckYourEmail = () => {
-    router.navigate("/RegisterWithEmail");
+    router.navigate({
+      pathname: "/RegisterWithEmail",
+      params: { username: username },
+    });
   };
 
   const handleOpenBottomSheet = () => {
@@ -152,9 +193,25 @@ const SelectUsernameScreen = () => {
             <Button
               label="Continuar"
               onPress={handleOpenBottomSheet}
-              disabled={!isUsernameInputFilled || !usernameAvailable}
+              disabled={!isUsernameInputFilled || !usernameAvailable || isLoading}
               variant="primary"
             />
+            {!isLoading && usernameAvailable === false && (
+              <Text
+                variant="body"
+                style={{ ...styles.usernameInputMessage, color: colors.brand.error }}
+              >
+                Usuario no disponible
+              </Text>
+            )}
+            {!isLoading && usernameAvailable === true && (
+              <Text
+                variant="body"
+                style={{ ...styles.usernameInputMessage, color: colors.brand.success }}
+              >
+                ¡Usuario disponible!
+              </Text>
+            )}
           </View>
 
           <BottomSheet
@@ -248,6 +305,12 @@ const styles = StyleSheet.create({
   usernameInputIcon: {
     position: "absolute",
     right: 20,
+  },
+  usernameInputMessage: {
+    fontSize: 14,
+    marginTop: 5,
+    textAlign: "center",
+    fontFamily: "OpenSauceOneSemiBold",
   },
   bottomSheetBackground: {
     backgroundColor: colors.background.tertiary,
