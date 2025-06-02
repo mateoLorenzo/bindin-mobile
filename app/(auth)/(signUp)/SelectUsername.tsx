@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Animated,
 } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -53,6 +54,10 @@ const SelectUsernameScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["50%"], []);
 
+  const usernameBorderColorAnimation = useRef(new Animated.Value(0)).current;
+  const usernameSuccessOpacity = useRef(new Animated.Value(0)).current;
+  const usernameErrorOpacity = useRef(new Animated.Value(0)).current;
+
   const {
     data,
     isFetching: isLoading,
@@ -65,11 +70,36 @@ const SelectUsernameScreen = () => {
     gcTime: 0,
   });
 
+  const animatedUsernameBorderColor = usernameBorderColorAnimation.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
+  });
+
   useEffect(() => {
     if (data !== undefined) {
       setUsernameAvailable(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(usernameBorderColorAnimation, {
+        toValue: usernameAvailable === true ? 1 : usernameAvailable === false ? -1 : 0,
+        duration: 150,
+        useNativeDriver: false,
+      }),
+      Animated.timing(usernameSuccessOpacity, {
+        toValue: usernameAvailable === true ? 1 : 0,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(usernameErrorOpacity, {
+        toValue: usernameAvailable === false ? 1 : 0,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [usernameAvailable]);
 
   const validateUsername = (value: string) => {
     if (value.trim() === "") return;
@@ -154,8 +184,11 @@ const SelectUsernameScreen = () => {
 
           <View style={styles.usernameContainer}>
             <View style={styles.usernameInputGroup}>
+              <Animated.View
+                style={[styles.usernameInput, { borderColor: animatedUsernameBorderColor }]}
+              >
               <TextInput
-                style={styles.usernameInput}
+                  style={[styles.usernameTextInput]}
                 placeholder="Nombre de usuario"
                 value={username}
                 onChangeText={handleUsernameChange}
@@ -165,6 +198,7 @@ const SelectUsernameScreen = () => {
                 returnKeyType="done"
                 autoFocus
               />
+              </Animated.View>
               {isLoading && (
                 <ActivityIndicator
                   size={24}
@@ -173,20 +207,26 @@ const SelectUsernameScreen = () => {
                 />
               )}
               {!isLoading && usernameAvailable === true && (
+                <Animated.View
+                  style={[styles.usernameInputIcon, { opacity: usernameSuccessOpacity }]}
+                >
                 <MaterialCommunityIcons
                   name="check-circle"
                   size={24}
                   color={colors.brand.success}
-                  style={styles.usernameInputIcon}
                 />
+                </Animated.View>
               )}
               {!isLoading && usernameAvailable === false && (
+                <Animated.View
+                  style={[styles.usernameInputIcon, { opacity: usernameErrorOpacity }]}
+                >
                 <MaterialCommunityIcons
                   name="close-circle"
                   size={24}
                   color={colors.brand.error}
-                  style={styles.usernameInputIcon}
                 />
+                </Animated.View>
               )}
             </View>
 
@@ -197,20 +237,24 @@ const SelectUsernameScreen = () => {
               variant="primary"
             />
             {!isLoading && usernameAvailable === false && (
+              <Animated.View style={{ opacity: usernameErrorOpacity }}>
               <Text
                 variant="body"
                 style={{ ...styles.usernameInputMessage, color: colors.brand.error }}
               >
                 Usuario no disponible
               </Text>
+              </Animated.View>
             )}
             {!isLoading && usernameAvailable === true && (
+              <Animated.View style={{ opacity: usernameSuccessOpacity }}>
               <Text
                 variant="body"
                 style={{ ...styles.usernameInputMessage, color: colors.brand.success }}
               >
                 ¡Usuario disponible!
               </Text>
+              </Animated.View>
             )}
           </View>
 
@@ -300,6 +344,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 20,
     paddingVertical: 18,
+    width: "100%",
+  },
+  usernameTextInput: {
+    color: colors.input.primary,
+    fontSize: 14,
+    borderWidth: 0,
     width: "100%",
   },
   usernameInputIcon: {
