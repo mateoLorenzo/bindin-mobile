@@ -43,6 +43,7 @@ const RegisterWithEmailScreen = () => {
   const criteriaOpacity = useRef(new Animated.Value(0)).current;
   const criteriaHeight = useRef(new Animated.Value(0)).current;
   const borderColorAnimation = useRef(new Animated.Value(0)).current;
+  const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
 
   const passwordCriteria = useMemo<PasswordCriteria>(() => {
     return {
@@ -53,6 +54,11 @@ const RegisterWithEmailScreen = () => {
       hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
     };
   }, [password]);
+
+  const isEmailValid = useMemo(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return email.trim() !== "" && emailRegex.test(email.trim());
+  }, [email]);
 
   const criteriaOrder = [
     {
@@ -83,6 +89,11 @@ const RegisterWithEmailScreen = () => {
   const nextIncompleteStep = criteriaOrder.find((criterion) => !criterion.completed);
 
   const animatedBorderColor = borderColorAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [colors.border.secondary, colors.brand.success],
+  });
+
+  const animatedEmailBorderColor = emailBorderColorAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: [colors.border.secondary, colors.brand.success],
   });
@@ -128,10 +139,17 @@ const RegisterWithEmailScreen = () => {
         useNativeDriver: false,
       }).start();
     } else {
-      // Reset border color when criteria is hidden
       borderColorAnimation.setValue(0);
     }
   }, [isPasswordValid, showCriteria]);
+
+  useEffect(() => {
+    Animated.timing(emailBorderColorAnimation, {
+      toValue: isEmailValid ? 1 : 0,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [isEmailValid]);
 
   const goBack = () => {
     router.back();
@@ -176,15 +194,20 @@ const RegisterWithEmailScreen = () => {
             <Text style={styles.emailInputGroupLabel} variant="label">
               Correo electrónico
             </Text>
-            <TextInput
-              style={styles.emailAuthInput}
-              placeholder="Ejemplo@gmail.com"
-              placeholderTextColor={colors.input.placeholder}
-              keyboardType="email-address"
-              autoFocus
-              value={email}
-              onChangeText={setEmail}
-            />
+            <Animated.View
+              style={[styles.emailAuthInput, { borderColor: animatedEmailBorderColor }]}
+            >
+              <TextInput
+                style={[styles.emailInput]}
+                placeholder="Ejemplo@gmail.com"
+                placeholderTextColor={colors.input.placeholder}
+                keyboardType="email-address"
+                autoFocus
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </Animated.View>
           </View>
 
           <View style={styles.passwordInputGroup}>
@@ -314,6 +337,10 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
+  },
+  emailInput: {
+    color: colors.input.primary,
+    borderWidth: 0,
   },
   passwordInputContainer: {
     justifyContent: "center",
