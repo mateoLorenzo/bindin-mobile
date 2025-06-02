@@ -187,17 +187,17 @@ const SelectUsernameScreen = () => {
               <Animated.View
                 style={[styles.usernameInput, { borderColor: animatedUsernameBorderColor }]}
               >
-              <TextInput
+                <TextInput
                   style={[styles.usernameTextInput]}
-                placeholder="Nombre de usuario"
-                value={username}
-                onChangeText={handleUsernameChange}
-                placeholderTextColor={colors.input.placeholder}
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="done"
-                autoFocus
-              />
+                  placeholder="Nombre de usuario"
+                  value={username}
+                  onChangeText={handleUsernameChange}
+                  placeholderTextColor={colors.input.placeholder}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  autoFocus
+                />
               </Animated.View>
               {isLoading && (
                 <ActivityIndicator
@@ -210,22 +210,22 @@ const SelectUsernameScreen = () => {
                 <Animated.View
                   style={[styles.usernameInputIcon, { opacity: usernameSuccessOpacity }]}
                 >
-                <MaterialCommunityIcons
-                  name="check-circle"
-                  size={24}
-                  color={colors.brand.success}
-                />
+                  <MaterialCommunityIcons
+                    name="check-circle"
+                    size={24}
+                    color={colors.brand.success}
+                  />
                 </Animated.View>
               )}
               {!isLoading && usernameAvailable === false && (
                 <Animated.View
                   style={[styles.usernameInputIcon, { opacity: usernameErrorOpacity }]}
                 >
-                <MaterialCommunityIcons
-                  name="close-circle"
-                  size={24}
-                  color={colors.brand.error}
-                />
+                  <MaterialCommunityIcons
+                    name="close-circle"
+                    size={24}
+                    color={colors.brand.error}
+                  />
                 </Animated.View>
               )}
             </View>
@@ -238,22 +238,22 @@ const SelectUsernameScreen = () => {
             />
             {!isLoading && usernameAvailable === false && (
               <Animated.View style={{ opacity: usernameErrorOpacity }}>
-              <Text
-                variant="body"
-                style={{ ...styles.usernameInputMessage, color: colors.brand.error }}
-              >
-                Usuario no disponible
-              </Text>
+                <Text
+                  variant="body"
+                  style={{ ...styles.usernameInputMessage, color: colors.brand.error }}
+                >
+                  Usuario no disponible
+                </Text>
               </Animated.View>
             )}
             {!isLoading && usernameAvailable === true && (
               <Animated.View style={{ opacity: usernameSuccessOpacity }}>
-              <Text
-                variant="body"
-                style={{ ...styles.usernameInputMessage, color: colors.brand.success }}
-              >
-                ¡Usuario disponible!
-              </Text>
+                <Text
+                  variant="body"
+                  style={{ ...styles.usernameInputMessage, color: colors.brand.success }}
+                >
+                  ¡Usuario disponible!
+                </Text>
               </Animated.View>
             )}
           </View>
