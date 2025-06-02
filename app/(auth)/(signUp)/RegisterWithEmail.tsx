@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState, useMemo, useRef, useEffect } from "react";
@@ -14,6 +15,8 @@ import {
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
+import axios, { isAxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
 
 interface PasswordCriteria {
   hasMinLength: boolean;
@@ -21,6 +24,17 @@ interface PasswordCriteria {
   hasLowercase: boolean;
   hasNumber: boolean;
   hasSpecialChar: boolean;
+}
+
+const PUBLIC_API_URL = "http://localhost:3000";
+
+interface userDataToRegister {
+  user: {
+    email: string;
+    password: string;
+    username: string;
+    password_confirmation: string;
+  };
 }
 
 const PasswordStep = ({ completed }: { completed: boolean }) => (
@@ -32,11 +46,27 @@ const PasswordStep = ({ completed }: { completed: boolean }) => (
   />
 );
 
+const registerUser = async (userData: userDataToRegister) => {
+  try {
+    const response = await axios.post(`${PUBLIC_API_URL}/users`, JSON.stringify(userData), {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.log("Error registering user:", error.response?.data);
+    }
+    console.log("Error registering user:", error);
+    return false;
+  }
+};
+
 const RegisterWithEmailScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showCriteria, setShowCriteria] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const isEmailInputFilled = email.trim() !== "";
   const { username } = useLocalSearchParams();
 
@@ -44,6 +74,11 @@ const RegisterWithEmailScreen = () => {
   const criteriaHeight = useRef(new Animated.Value(0)).current;
   const borderColorAnimation = useRef(new Animated.Value(0)).current;
   const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
+  const emailInputRef = useRef<TextInput>(null);
+
+  const { mutate: registerUserMutation, data } = useMutation({
+    mutationFn: registerUser,
+  });
 
   const passwordCriteria = useMemo<PasswordCriteria>(() => {
     return {
@@ -94,17 +129,49 @@ const RegisterWithEmailScreen = () => {
   });
 
   const animatedEmailBorderColor = emailBorderColorAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [colors.border.secondary, colors.brand.success],
+    inputRange: [-1, 0, 1],
+    outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
   });
 
   useEffect(() => {
-    // Password criteria - Fade in and slide up
+    if (data) {
+      router.navigate("/CheckYourEmail");
+    }
+    if (data === false) {
+      // TODO: Check error status and set error text accordingly
+      setErrorText("El correo ya esta registrado");
+      setShowCriteria(false);
+      Animated.parallel([
+        Animated.timing(emailBorderColorAnimation, {
+          toValue: -1,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+        Animated.timing(criteriaHeight, {
+          toValue: 20,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+        Animated.timing(criteriaOpacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+      ]).start(() => {
+        emailInputRef.current?.focus();
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (errorText) {
+      return;
+    }
     if (showCriteria) {
       Animated.parallel([
         Animated.timing(criteriaOpacity, {
           toValue: 1,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false,
         }),
         Animated.timing(criteriaHeight, {
@@ -114,7 +181,6 @@ const RegisterWithEmailScreen = () => {
         }),
       ]).start();
     } else {
-      // Password criteria - Fade out and slide down
       Animated.parallel([
         Animated.timing(criteriaOpacity, {
           toValue: 0,
@@ -128,28 +194,33 @@ const RegisterWithEmailScreen = () => {
         }),
       ]).start();
     }
-  }, [showCriteria]);
+  }, [showCriteria, errorText]);
 
   useEffect(() => {
-    // Animate border color when password becomes valid/invalid
-    if (showCriteria) {
+    if (password.length > 0) {
       Animated.timing(borderColorAnimation, {
         toValue: isPasswordValid ? 1 : 0,
-        duration: 250,
+        duration: 200,
         useNativeDriver: false,
       }).start();
     } else {
       borderColorAnimation.setValue(0);
     }
-  }, [isPasswordValid, showCriteria]);
+  }, [isPasswordValid, password.length]);
 
   useEffect(() => {
+    if (errorText) {
+      setErrorText("");
+      if (password.length === 0) {
+        setShowCriteria(false);
+      }
+    }
     Animated.timing(emailBorderColorAnimation, {
       toValue: isEmailValid ? 1 : 0,
-      duration: 250,
+      duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [isEmailValid]);
+  }, [email]);
 
   const goBack = () => {
     router.back();
@@ -161,15 +232,23 @@ const RegisterWithEmailScreen = () => {
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
-    if (value.length > 0 && !showCriteria) {
+    if (value.length > 0 && !showCriteria && !errorText) {
       setShowCriteria(true);
-    } else if (value.length === 0) {
+    } else if (value.length === 0 && !errorText) {
       setShowCriteria(false);
     }
   };
 
-  const navigateToCheckYourEmail = () => {
-    router.navigate("/CheckYourEmail");
+  const handleRegisterUser = () => {
+    const userData = {
+      user: {
+        email,
+        password,
+        username: username as string,
+        password_confirmation: password,
+      },
+    };
+    registerUserMutation(userData);
   };
 
   return (
@@ -206,18 +285,19 @@ const RegisterWithEmailScreen = () => {
                 autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
+                ref={emailInputRef}
               />
             </Animated.View>
           </View>
 
           <View style={styles.passwordInputGroup}>
-            <Text style={styles.emailInputGroupLabel} variant="label">
+            <Text style={styles.passwordInputGroupLabel} variant="label">
               Contraseña
             </Text>
             <View style={styles.passwordInputContainer}>
               <Animated.View style={[styles.emailAuthInput, { borderColor: animatedBorderColor }]}>
                 <TextInput
-                  style={[styles.passwordInput]}
+                  style={styles.passwordInput}
                   placeholder="***********"
                   placeholderTextColor={colors.input.placeholder}
                   secureTextEntry={!showPassword}
@@ -244,33 +324,39 @@ const RegisterWithEmailScreen = () => {
                 },
               ]}
             >
-              <View style={styles.stepsContainer}>
-                {criteriaOrder.map((_, index) => (
-                  <PasswordStep key={index} completed={index < completedSteps} />
-                ))}
-              </View>
-
-              <View style={styles.messageContainer}>
-                {isPasswordValid ? (
-                  <View style={styles.successContainer}>
-                    <Ionicons name="checkmark-circle" size={20} color={colors.brand.success} />
-                    <Text
-                      style={[styles.successText, { color: colors.brand.success }]}
-                      variant="label"
-                    >
-                      ¡Contraseña segura!
-                    </Text>
+              {!errorText && showCriteria ? (
+                <View>
+                  <View style={styles.stepsContainer}>
+                    {criteriaOrder.map((_, index) => (
+                      <PasswordStep key={index} completed={index < completedSteps} />
+                    ))}
                   </View>
-                ) : (
-                  nextIncompleteStep && (
-                    <View style={styles.stepMessageContainer}>
-                      <Text style={styles.stepMessage} variant="label">
-                        {nextIncompleteStep.message}
-                      </Text>
-                    </View>
-                  )
-                )}
-              </View>
+
+                  <View style={styles.messageContainer}>
+                    {isPasswordValid ? (
+                      <View style={styles.successContainer}>
+                        <Ionicons name="checkmark-circle" size={20} color={colors.brand.success} />
+                        <Text
+                          style={[styles.successText, { color: colors.brand.success }]}
+                          variant="label"
+                        >
+                          ¡Contraseña segura!
+                        </Text>
+                      </View>
+                    ) : (
+                      nextIncompleteStep && (
+                        <View style={styles.stepMessageContainer}>
+                          <Text style={styles.stepMessage} variant="label">
+                            {nextIncompleteStep.message}
+                          </Text>
+                        </View>
+                      )
+                    )}
+                  </View>
+                </View>
+              ) : (
+                <Text style={styles.errorText}>{errorText}</Text>
+              )}
             </Animated.View>
           </View>
         </View>
@@ -278,8 +364,8 @@ const RegisterWithEmailScreen = () => {
         <View style={styles.signInButtonContainer}>
           <Button
             label="Continuar"
-            onPress={navigateToCheckYourEmail}
-            disabled={!isEmailInputFilled || !isPasswordValid}
+            onPress={handleRegisterUser}
+            disabled={!isEmailInputFilled || !isPasswordValid || !!errorText}
             variant="primary"
           />
           <Text style={styles.termsAndPrivacyText} variant="label">
@@ -323,12 +409,15 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   passwordInputGroup: {
-    gap: 10,
     marginTop: 5,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   emailInputGroupLabel: {
     color: colors.input.primary,
+  },
+  passwordInputGroupLabel: {
+    color: colors.input.primary,
+    marginBottom: 10,
   },
   emailAuthInput: {
     color: colors.input.primary,
@@ -344,6 +433,7 @@ const styles = StyleSheet.create({
   },
   passwordInputContainer: {
     justifyContent: "center",
+    marginBottom: 10,
   },
   passwordInput: {
     paddingRight: 50,
@@ -354,7 +444,6 @@ const styles = StyleSheet.create({
     right: 20,
   },
   passwordValidationContainer: {
-    gap: 5,
     justifyContent: "center",
   },
   stepsContainer: {
@@ -369,6 +458,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     minHeight: 24,
+    marginTop: 10,
     justifyContent: "center",
   },
   successContainer: {
@@ -397,6 +487,12 @@ const styles = StyleSheet.create({
   termsAndPrivacyText: {
     color: colors.text.secondary,
     textAlign: "center",
+  },
+  errorText: {
+    color: colors.brand.error,
+    textAlign: "center",
+    fontFamily: "OpenSauceOneMedium",
+    fontSize: 14,
   },
 });
 
