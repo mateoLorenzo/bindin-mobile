@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "600",
     color: colors.text.secondary,
+    textAlign: "center",
   },
   signInButtonsContainer: {
     alignItems: "center",
