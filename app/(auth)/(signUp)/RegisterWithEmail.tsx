@@ -76,7 +76,11 @@ const RegisterWithEmailScreen = () => {
   const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
   const emailInputRef = useRef<TextInput>(null);
 
-  const { mutate: registerUserMutation, data } = useMutation({
+  const {
+    mutate: registerUserMutation,
+    data,
+    isPending,
+  } = useMutation({
     mutationFn: registerUser,
   });
 
@@ -367,6 +371,7 @@ const RegisterWithEmailScreen = () => {
             onPress={handleRegisterUser}
             disabled={!isEmailInputFilled || !isPasswordValid || !!errorText}
             variant="primary"
+            loading={isPending}
           />
           <Text style={styles.termsAndPrivacyText} variant="label">
             Al registrarte aceptas nuestros <Text variant="link">Términos</Text> y{" "}
