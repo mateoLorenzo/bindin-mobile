@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../AppButton";
 import colors from "@/src/theme/colors";
+import React, { useState, useEffect } from "react";
+import { RESEND_EMAIL_INTERVAL } from "@/src/constants";
 
 interface IProps {
   email: string;
@@ -17,6 +19,38 @@ export const CheckYourEmailMessage = ({
   onOpenEmail = () => {},
   onBack = () => {},
 }: IProps) => {
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+
+    if (countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [countdown]);
+
+  const handleResendEmail = () => {
+    if (countdown === 0) {
+      onResendEmail();
+      setCountdown(RESEND_EMAIL_INTERVAL);
+    }
+  };
+
+  const getResendButtonLabel = () => {
+    if (countdown > 0) {
+      return `Reenviar en ${countdown}s`;
+    }
+    return "Reenviar correo";
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -42,8 +76,9 @@ export const CheckYourEmailMessage = ({
             {email}
           </Text>
           <Button
-            label="Reenviar correo"
-            onPress={onResendEmail}
+            label={getResendButtonLabel()}
+            onPress={handleResendEmail}
+            disabled={countdown > 0}
             variant="text"
             style={styles.resendLinkContainer}
             labelStyle={styles.resendLink}

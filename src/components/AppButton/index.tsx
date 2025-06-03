@@ -64,7 +64,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
       case "social":
         return [styles.button, styles.socialButton, style];
       case "text":
-        return [styles.button, styles.textButton, style];
+        return [styles.button, styles.textButton, disabled && styles.disabledButton, style];
       default:
         return [styles.button, styles.primaryButton, style];
     }

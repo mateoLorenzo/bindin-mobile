@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -15,20 +16,31 @@ import {
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
+import { usePasswordReset } from "@/src/hooks/usePasswordReset";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
+  const { mutate: sendPasswordUpdateRequest, isPending, data } = usePasswordReset();
 
-  // Make more complex validation for email
+  // Add more complex validation for email
   const isEmailInputFilled = email.trim() !== "";
 
   const navigateBack = () => {
     router.back();
   };
 
-  const naviateToCheckYourEmail = () => {
+  useEffect(() => {
+    if (data) {
+      router.navigate({
+        pathname: "/CheckYourEmail",
+        params: { email },
+      });
+    }
+  }, [data]);
+
+  const handlePasswordUpdateRequest = () => {
     if (isEmailInputFilled) {
-      router.navigate("/CheckYourEmail");
+      sendPasswordUpdateRequest(email);
     }
   };
 
@@ -68,7 +80,8 @@ const ForgotPasswordScreen = () => {
           <View style={styles.signInButtonContainer}>
             <Button
               label="Continuar"
-              onPress={naviateToCheckYourEmail}
+              loading={isPending}
+              onPress={handlePasswordUpdateRequest}
               disabled={!isEmailInputFilled}
               variant="primary"
             />

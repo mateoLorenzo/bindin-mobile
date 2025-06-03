@@ -17,3 +17,5 @@ export const SOCIAL_PROVIDERS: {
     provider: "discord",
   },
 ];
+
+export const RESEND_EMAIL_INTERVAL = 60;
