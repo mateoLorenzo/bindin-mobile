@@ -154,6 +154,7 @@ const SignInScreen = () => {
                 keyboardType="email-address"
                 value={email}
                 onChangeText={onChangeEmail}
+                autoCapitalize="none"
               />
             </View>
 

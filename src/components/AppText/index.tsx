@@ -14,7 +14,7 @@ export function AppText({ variant = "body", style, ...rest }: Props) {
 const styles = StyleSheet.create({
   title: {
     fontFamily: "PoppinsBold",
-    fontSize: 24,
+    fontSize: 20,
     color: colors.text.primary,
   },
   subtitle: {

@@ -24,15 +24,16 @@ import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
 import { useQuery } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
+import Constants from "expo-constants";
 
-const APP_STAGE_URL = "http://localhost:3000";
+const apiUrl = Constants.expoConfig?.extra?.apiUrl;
 
 const checkUsername = async (username: string) => {
   try {
     // Delay to always show at least 500ms of loading
     const minDelay = new Promise((resolve) => setTimeout(resolve, 500));
     const requestPromise = axios
-      .get(`${APP_STAGE_URL}/users/availability?username=${username}`, {
+      .get(`${apiUrl}/users/availability?username=${username}`, {
         headers: { "Content-Type": "application/json" },
       })
       .then((response) => response.data);
@@ -174,7 +175,7 @@ const SelectUsernameScreen = () => {
             </TouchableOpacity>
 
             <Text style={styles.title} variant="title">
-              Elegi tu nombre de usuario
+              Elegí tu nombre de usuario
             </Text>
 
             <Text style={styles.subtitle} variant="body">
@@ -188,7 +189,7 @@ const SelectUsernameScreen = () => {
                 style={[styles.usernameInput, { borderColor: animatedUsernameBorderColor }]}
               >
                 <TextInput
-                  style={[styles.usernameTextInput]}
+                  style={styles.usernameTextInput}
                   placeholder="Nombre de usuario"
                   value={username}
                   onChangeText={handleUsernameChange}
@@ -321,6 +322,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 15,
+    textAlign: "center",
   },
   subtitle: {
     color: colors.text.tertiary,
@@ -343,7 +345,9 @@ const styles = StyleSheet.create({
     color: colors.input.primary,
     fontSize: 14,
     paddingHorizontal: 20,
-    paddingVertical: 18,
+    paddingVertical: 5,
+    minHeight: 55,
+    justifyContent: "center",
     width: "100%",
   },
   usernameTextInput: {
