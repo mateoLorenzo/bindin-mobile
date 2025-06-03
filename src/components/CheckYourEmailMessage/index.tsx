@@ -11,6 +11,7 @@ interface IProps {
   onResendEmail: () => void;
   onOpenEmail: () => void;
   onBack: () => void;
+  loading: boolean;
 }
 
 export const CheckYourEmailMessage = ({
@@ -18,6 +19,7 @@ export const CheckYourEmailMessage = ({
   onResendEmail = () => {},
   onOpenEmail = () => {},
   onBack = () => {},
+  loading = false,
 }: IProps) => {
   const [countdown, setCountdown] = useState(0);
 
@@ -87,7 +89,7 @@ export const CheckYourEmailMessage = ({
       </View>
 
       <View style={styles.openEmailContainer}>
-        <Button label="Abrir correo" onPress={onOpenEmail} variant="primary" />
+        <Button label="Abrir correo" onPress={onOpenEmail} variant="primary" loading={loading} />
       </View>
     </SafeAreaView>
   );
