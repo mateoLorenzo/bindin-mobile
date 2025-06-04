@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   disabledButton: {
-    opacity: 0.5,
+    backgroundColor: colors.brand.primaryDisabled,
   },
   buttonContent: {
     flexDirection: "row",

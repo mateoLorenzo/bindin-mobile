@@ -11,6 +11,7 @@ import {
   View,
   Animated,
   Platform,
+  Linking,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
@@ -232,6 +233,22 @@ const RegisterWithEmailScreen = () => {
     registerUserMutation(userData);
   };
 
+  const handleTermsPress = async () => {
+    try {
+      await Linking.openURL("https://bindingg.notion.site/terms-and-conditions");
+    } catch (error) {
+      console.log("Error opening terms URL:", error);
+    }
+  };
+
+  const handlePrivacyPress = async () => {
+    try {
+      await Linking.openURL("https://bindingg.notion.site/privacy-policy");
+    } catch (error) {
+      console.log("Error opening privacy URL:", error);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -351,8 +368,14 @@ const RegisterWithEmailScreen = () => {
             loading={isPending}
           />
           <Text style={styles.termsAndPrivacyText} variant="label">
-            Al registrarte aceptas nuestros <Text variant="link">Términos</Text> y{" "}
-            <Text variant="link">Política de Privacidad</Text>
+            Al registrarte aceptas nuestros{" "}
+            <Text variant="link" onPress={handleTermsPress}>
+              Términos
+            </Text>{" "}
+            y{" "}
+            <Text variant="link" onPress={handlePrivacyPress}>
+              Política de Privacidad
+            </Text>
           </Text>
         </View>
       </SafeAreaView>

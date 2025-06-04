@@ -36,6 +36,7 @@ const colors = {
   },
   brand: {
     primary: "#C084FC",
+    primaryDisabled: "#694B87",
     secondary: "#6B7280",
     tertiary: "#121212",
     success: "#24B173",

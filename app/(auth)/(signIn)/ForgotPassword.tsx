@@ -31,6 +31,7 @@ const ForgotPasswordScreen = () => {
   } = useEmailValidation(email, 600);
 
   const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
+  const errorMessageOpacity = useRef(new Animated.Value(0)).current;
 
   const animatedEmailBorderColor = emailBorderColorAnimation.interpolate({
     inputRange: [-1, 0, 1],
@@ -53,17 +54,31 @@ const ForgotPasswordScreen = () => {
   useEffect(() => {
     // Update animation based on email status
     let animationValue = 0;
+    let errorOpacity = 0;
+
     if (emailStatus === "valid") {
       animationValue = 1;
+      errorOpacity = 0;
     } else if (emailStatus === "error") {
       animationValue = -1;
+      errorOpacity = 1;
+    } else {
+      animationValue = 0;
+      errorOpacity = 0;
     }
 
-    Animated.timing(emailBorderColorAnimation, {
-      toValue: animationValue,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
+    Animated.parallel([
+      Animated.timing(emailBorderColorAnimation, {
+        toValue: animationValue,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(errorMessageOpacity, {
+        toValue: errorOpacity,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
   }, [emailStatus]);
 
   const handlePasswordUpdateRequest = () => {
@@ -108,11 +123,11 @@ const ForgotPasswordScreen = () => {
               />
             </Animated.View>
 
-            {emailStatus === "error" && emailErrorMessage && (
+            <Animated.View style={{ opacity: errorMessageOpacity }}>
               <Text style={styles.errorText} variant="label">
-                {emailErrorMessage}
+                {emailErrorMessage || " "}
               </Text>
-            )}
+            </Animated.View>
           </View>
 
           <View style={styles.signInButtonContainer}>
@@ -164,7 +179,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border.secondary,
     borderRadius: 100,
     paddingHorizontal: 20,
-    paddingVertical: 18,
+    minHeight: 60,
     justifyContent: "center",
   },
   emailInput: {
@@ -184,6 +199,7 @@ const styles = StyleSheet.create({
     color: colors.brand.error,
     textAlign: "center",
     marginTop: 5,
+    minHeight: 18,
   },
 });
 
