@@ -17,6 +17,7 @@ import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRegisterUser, UserDataToRegister } from "../../../src/hooks/useRegisterUser";
+import { useEmailValidation } from "../../../src/hooks/useEmailValidation";
 
 interface PasswordCriteria {
   hasMinLength: boolean;
@@ -51,6 +52,8 @@ const RegisterWithEmailScreen = () => {
 
   const { mutate: registerUserMutation, data, isPending } = useRegisterUser();
 
+  const { isValid: isEmailValid, status: emailStatus } = useEmailValidation(email, 600);
+
   const passwordCriteria = useMemo<PasswordCriteria>(() => {
     return {
       hasMinLength: password.length >= 10,
@@ -60,11 +63,6 @@ const RegisterWithEmailScreen = () => {
       hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
     };
   }, [password]);
-
-  const isEmailValid = useMemo(() => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return email.trim() !== "" && emailRegex.test(email.trim());
-  }, [email]);
 
   const criteriaOrder = [
     {
@@ -189,12 +187,21 @@ const RegisterWithEmailScreen = () => {
         setShowCriteria(false);
       }
     }
+
+    // Update animation based on email status
+    let animationValue = 0;
+    if (emailStatus === "valid") {
+      animationValue = 1;
+    } else if (emailStatus === "error") {
+      animationValue = -1;
+    }
+
     Animated.timing(emailBorderColorAnimation, {
-      toValue: isEmailValid ? 1 : 0,
+      toValue: animationValue,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [email]);
+  }, [email, emailStatus]);
 
   const goBack = () => {
     router.back();

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -11,19 +11,31 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Animated,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
 import { usePasswordReset } from "@/src/hooks/usePasswordReset";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useEmailValidation } from "@/src/hooks/useEmailValidation";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
   const { mutate: sendPasswordUpdateRequest, isPending, data } = usePasswordReset();
 
-  // Add more complex validation for email
-  const isEmailInputFilled = email.trim() !== "";
+  const {
+    isValid: isEmailValid,
+    status: emailStatus,
+    errorMessage: emailErrorMessage,
+  } = useEmailValidation(email, 600);
+
+  const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
+
+  const animatedEmailBorderColor = emailBorderColorAnimation.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
+  });
 
   const navigateBack = () => {
     router.back();
@@ -38,8 +50,24 @@ const ForgotPasswordScreen = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    // Update animation based on email status
+    let animationValue = 0;
+    if (emailStatus === "valid") {
+      animationValue = 1;
+    } else if (emailStatus === "error") {
+      animationValue = -1;
+    }
+
+    Animated.timing(emailBorderColorAnimation, {
+      toValue: animationValue,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [emailStatus]);
+
   const handlePasswordUpdateRequest = () => {
-    if (isEmailInputFilled) {
+    if (isEmailValid) {
       sendPasswordUpdateRequest(email);
     }
   };
@@ -65,16 +93,26 @@ const ForgotPasswordScreen = () => {
             <Text style={styles.emailInputGroupLabel} variant="label">
               Correo electrónico
             </Text>
-            <TextInput
-              style={styles.emailAuthInput}
-              placeholder="Ejemplo@gmail.com"
-              placeholderTextColor={colors.input.placeholder}
-              keyboardType="email-address"
-              autoFocus
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-            />
+            <Animated.View
+              style={[styles.emailAuthInput, { borderColor: animatedEmailBorderColor }]}
+            >
+              <TextInput
+                style={styles.emailInput}
+                placeholder="Ejemplo@gmail.com"
+                placeholderTextColor={colors.input.placeholder}
+                keyboardType="email-address"
+                autoFocus
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+              />
+            </Animated.View>
+
+            {emailStatus === "error" && emailErrorMessage && (
+              <Text style={styles.errorText} variant="label">
+                {emailErrorMessage}
+              </Text>
+            )}
           </View>
 
           <View style={styles.signInButtonContainer}>
@@ -82,7 +120,7 @@ const ForgotPasswordScreen = () => {
               label="Continuar"
               loading={isPending}
               onPress={handlePasswordUpdateRequest}
-              disabled={!isEmailInputFilled}
+              disabled={!isEmailValid}
               variant="primary"
             />
           </View>
@@ -127,6 +165,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
+    justifyContent: "center",
+  },
+  emailInput: {
+    color: colors.input.primary,
+    borderWidth: 0,
   },
   continueButtonSectionContainer: {
     flex: 1,
@@ -136,6 +179,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
+  },
+  errorText: {
+    color: colors.brand.error,
+    textAlign: "center",
+    marginTop: 5,
   },
 });
 

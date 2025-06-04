@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,14 +17,13 @@ import { AppButton as Button } from "../../../src/components/AppButton";
 import { SOCIAL_PROVIDERS } from "@/src/constants";
 import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
-import Constants from "expo-constants";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+import { getApiUrl } from "@/src/utils";
 
 const handleSignIn = async (email: string, password: string) => {
   try {
     const user = { login: email, password: password };
+    const apiUrl = getApiUrl();
     const response = await axios.post(`${apiUrl}/users/sign_in`, { user });
     return response.data;
   } catch (error) {
@@ -274,6 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
+    minHeight: 50,
   },
   passwordInputContainer: {
     position: "relative",
