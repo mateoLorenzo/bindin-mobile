@@ -37,6 +37,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "apiUrl": "https://staging.bindin.gg/api",
+      "googleAndroidClientId": "171967361588-iluos53glhk1ajat59p4u5mk7jhjh4sh.apps.googleusercontent.com",
+      "googleIosClientId": "171967361588-qqv1m8hqdk58allp854c7vh1vgttdlm2.apps.googleusercontent.com",
+      "googleRedirectUri": "com.bindin.app:/oauthredirect",
+      "appStage": "development",
+      "router": {},
+      "eas": {
+        "projectId": "1256429d-32bf-4771-bee3-16383ddaab82"
+      }
     }
   }
 }

@@ -1,0 +1,46 @@
+{
+  "cli": {
+    "version": ">= 16.8.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_STAGE": "development",
+        "API_URL": "https://staging.bindin.gg/api",
+        "GOOGLE_ANDROID_CLIENT_ID": "171967361588-iluos53glhk1ajat59p4u5mk7jhjh4sh.apps.googleusercontent.com",
+        "GOOGLE_IOS_CLIENT_ID": "171967361588-qqv1m8hqdk58allp854c7vh1vgttdlm2.apps.googleusercontent.com",
+        "GOOGLE_REDIRECT_URI": "com.bindin.app:/oauthredirect"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "APP_STAGE": "preview",
+        "API_URL": "https://staging.bindin.gg/api",
+        "GOOGLE_ANDROID_CLIENT_ID": "171967361588-iluos53glhk1ajat59p4u5mk7jhjh4sh.apps.googleusercontent.com",
+        "GOOGLE_IOS_CLIENT_ID": "171967361588-qqv1m8hqdk58allp854c7vh1vgttdlm2.apps.googleusercontent.com",
+        "GOOGLE_REDIRECT_URI": "com.bindin.app:/oauthredirect"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "APP_STAGE": "production",
+        "API_URL": "https://bindin.gg/api",
+        "GOOGLE_ANDROID_CLIENT_ID": "171967361588-iluos53glhk1ajat59p4u5mk7jhjh4sh.apps.googleusercontent.com",
+        "GOOGLE_IOS_CLIENT_ID": "171967361588-qqv1m8hqdk58allp854c7vh1vgttdlm2.apps.googleusercontent.com",
+        "GOOGLE_REDIRECT_URI": "com.bindin.app:/oauthredirect"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

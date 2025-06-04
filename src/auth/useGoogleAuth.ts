@@ -20,7 +20,8 @@ export default function useGoogleAuth() {
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     // TODO: Check android config modifying the SHA1
-    androidClientId: googleAndroidClientId,
+    // androidClientId: googleAndroidClientId,
+    androidClientId: "171967361588-qh7dhj6gc0f2u56udmfktg6cisf2s232.apps.googleusercontent.com",
     iosClientId: googleIosClientId,
     redirectUri: redirectUri,
     scopes: ["openid", "profile", "email"],
