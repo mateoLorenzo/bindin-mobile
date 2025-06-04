@@ -51,7 +51,50 @@ const RegisterWithEmailScreen = () => {
   const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
   const emailInputRef = useRef<TextInput>(null);
 
-  const { mutate: registerUserMutation, data, isPending } = useRegisterUser();
+  const handleRegisterUserError = (error: any) => {
+    let errorMessage = "Error al registrar el usuario";
+    if (error?.errors?.username?.length) {
+      errorMessage = "El nombre de usuario ya esta registrado";
+    }
+    if (error?.errors?.email?.length) {
+      errorMessage = "El correo ya esta registrado";
+    }
+
+    setErrorText(errorMessage);
+    setShowCriteria(false);
+
+    Animated.parallel([
+      Animated.timing(emailBorderColorAnimation, {
+        toValue: -1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(criteriaHeight, {
+        toValue: 20,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+      Animated.timing(criteriaOpacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+    ]).start(() => {
+      emailInputRef.current?.focus();
+    });
+  };
+
+  const handleRegisterUserSuccess = (data: any) => {
+    router.navigate({
+      pathname: "/CheckYourEmail",
+      params: { email, password, username },
+    });
+  };
+
+  const { mutate: registerUserMutation, isPending } = useRegisterUser({
+    onError: handleRegisterUserError,
+    onSuccess: handleRegisterUserSuccess,
+  });
 
   const { isValid: isEmailValid, status: emailStatus } = useEmailValidation(email, 600);
 
@@ -102,39 +145,6 @@ const RegisterWithEmailScreen = () => {
     inputRange: [-1, 0, 1],
     outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
   });
-
-  useEffect(() => {
-    if (data) {
-      router.navigate({
-        pathname: "/CheckYourEmail",
-        params: { email, password, username },
-      });
-    }
-    if (data === false) {
-      // TODO: Check error status and set error text accordingly
-      setErrorText("El correo ya esta registrado");
-      setShowCriteria(false);
-      Animated.parallel([
-        Animated.timing(emailBorderColorAnimation, {
-          toValue: -1,
-          duration: 200,
-          useNativeDriver: false,
-        }),
-        Animated.timing(criteriaHeight, {
-          toValue: 20,
-          duration: 200,
-          useNativeDriver: false,
-        }),
-        Animated.timing(criteriaOpacity, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: false,
-        }),
-      ]).start(() => {
-        emailInputRef.current?.focus();
-      });
-    }
-  }, [data]);
 
   useEffect(() => {
     if (errorText) {

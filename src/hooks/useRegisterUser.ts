@@ -21,15 +21,21 @@ const registerUser = async (userData: UserDataToRegister) => {
   } catch (error) {
     if (isAxiosError(error)) {
       console.log("Error registering user:", error.response?.data);
+      throw error.response?.data;
     }
     console.log("Error registering user:", error);
-    return false;
+    throw error;
   }
 };
 
-export const useRegisterUser = () => {
+export const useRegisterUser = (options?: {
+  onError?: (error: any) => void;
+  onSuccess?: (data: any) => void;
+}) => {
   return useMutation({
     mutationFn: registerUser,
+    onError: options?.onError,
+    onSuccess: options?.onSuccess,
   });
 };
 
