@@ -120,6 +120,9 @@ const ForgotPasswordScreen = () => {
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
+                multiline={false}
+                numberOfLines={1}
+                textContentType="emailAddress"
               />
             </Animated.View>
 

@@ -294,6 +294,9 @@ const RegisterWithEmailScreen = () => {
                 value={email}
                 onChangeText={setEmail}
                 ref={emailInputRef}
+                multiline={false}
+                numberOfLines={1}
+                textContentType="emailAddress"
               />
             </Animated.View>
           </View>
@@ -311,6 +314,10 @@ const RegisterWithEmailScreen = () => {
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={handlePasswordChange}
+                  contextMenuHidden={true}
+                  multiline={false}
+                  numberOfLines={1}
+                  textContentType="password"
                 />
               </Animated.View>
               <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
@@ -412,7 +419,7 @@ const styles = StyleSheet.create({
     color: colors.text.tertiary,
     fontFamily: "OpenSauceOneMedium",
     fontSize: 14,
-    marginTop: 5,
+    marginTop: Platform.OS === "ios" ? 0 : -5,
     marginBottom: 10,
   },
   emailAuthContainer: {

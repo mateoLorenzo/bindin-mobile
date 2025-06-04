@@ -160,6 +160,9 @@ const SignInScreen = () => {
                 value={email}
                 onChangeText={onChangeEmail}
                 autoCapitalize="none"
+                multiline={false}
+                numberOfLines={1}
+                textContentType="emailAddress"
               />
             </View>
 
@@ -175,6 +178,9 @@ const SignInScreen = () => {
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={onChangePassword}
+                  multiline={false}
+                  numberOfLines={1}
+                  textContentType="password"
                 />
                 <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
                   <Ionicons
@@ -273,7 +279,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
-    minHeight: 50,
+    minHeight: 55,
   },
   passwordInputContainer: {
     position: "relative",
