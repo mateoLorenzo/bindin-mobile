@@ -1,10 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -18,14 +17,21 @@ import { AppButton as Button } from "../../../src/components/AppButton";
 import { SOCIAL_PROVIDERS } from "@/src/constants";
 import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
+import Constants from "expo-constants";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const apiUrl = Constants.expoConfig?.extra?.apiUrl;
 
 const handleSignIn = async (email: string, password: string) => {
   try {
     const user = { login: email, password: password };
-    const response = await axios.post("http://localhost:3000/users/sign_in", { user });
+    const response = await axios.post(`${apiUrl}/users/sign_in`, { user });
     return response.data;
   } catch (error) {
-    if (isAxiosError(error)) throw error.response?.data;
+    if (isAxiosError(error)) {
+      console.log("error.response.data from handleSignIn", error.response?.data);
+      throw error.response?.data;
+    }
     throw error;
   }
 };
@@ -212,6 +218,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   keyboardAvoidingView: {
     flex: 1,

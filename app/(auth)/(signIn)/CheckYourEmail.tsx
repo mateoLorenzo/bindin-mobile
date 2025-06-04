@@ -1,13 +1,11 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { CheckYourEmailMessage } from "../../../src/components/CheckYourEmailMessage";
 import { usePasswordReset } from "@/src/hooks/usePasswordReset";
-import { Linking } from "react-native";
 
 const CheckYourEmail = () => {
   const { mutate: sendPasswordUpdateRequest } = usePasswordReset();
   const { email } = useLocalSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const goBack = () => {
@@ -20,15 +18,17 @@ const CheckYourEmail = () => {
     }
   };
 
+  // Verify how to handle resend sign up email request
   const onOpenEmail = async () => {
-    setIsLoading(true);
-    try {
-      await Linking.openURL("https://gmail.app.goo.gl");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    router.navigate({ pathname: "/ResetPassword" });
+    // setIsLoading(true);
+    // try {
+    //   await Linking.openURL("https://gmail.app.goo.gl");
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -37,7 +37,6 @@ const CheckYourEmail = () => {
       onResendEmail={onResendEmail}
       onOpenEmail={onOpenEmail}
       onBack={goBack}
-      loading={isLoading}
     />
   );
 };

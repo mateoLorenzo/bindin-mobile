@@ -1,17 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../AppButton";
 import colors from "@/src/theme/colors";
 import React, { useState, useEffect } from "react";
 import { RESEND_EMAIL_INTERVAL } from "@/src/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface IProps {
   email: string;
   onResendEmail: () => void;
   onOpenEmail: () => void;
   onBack: () => void;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const CheckYourEmailMessage = ({
@@ -97,8 +98,8 @@ export const CheckYourEmailMessage = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background.primary,
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   header: {
     alignItems: "center",

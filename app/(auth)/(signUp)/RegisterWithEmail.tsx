@@ -4,19 +4,19 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   Keyboard,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   Animated,
+  Platform,
 } from "react-native";
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
-import axios, { isAxiosError } from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRegisterUser, UserDataToRegister } from "../../../src/hooks/useRegisterUser";
 
 interface PasswordCriteria {
   hasMinLength: boolean;
@@ -24,17 +24,6 @@ interface PasswordCriteria {
   hasLowercase: boolean;
   hasNumber: boolean;
   hasSpecialChar: boolean;
-}
-
-const PUBLIC_API_URL = "http://localhost:3000";
-
-interface userDataToRegister {
-  user: {
-    email: string;
-    password: string;
-    username: string;
-    password_confirmation: string;
-  };
 }
 
 const PasswordStep = ({ completed }: { completed: boolean }) => (
@@ -46,28 +35,12 @@ const PasswordStep = ({ completed }: { completed: boolean }) => (
   />
 );
 
-const registerUser = async (userData: userDataToRegister) => {
-  try {
-    const response = await axios.post(`${PUBLIC_API_URL}/users`, JSON.stringify(userData), {
-      headers: { "Content-Type": "application/json" },
-    });
-    return response.data;
-  } catch (error) {
-    if (isAxiosError(error)) {
-      console.log("Error registering user:", error.response?.data);
-    }
-    console.log("Error registering user:", error);
-    return false;
-  }
-};
-
 const RegisterWithEmailScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showCriteria, setShowCriteria] = useState(false);
   const [errorText, setErrorText] = useState("");
-  const isEmailInputFilled = email.trim() !== "";
   const { username } = useLocalSearchParams();
 
   const criteriaOpacity = useRef(new Animated.Value(0)).current;
@@ -76,13 +49,7 @@ const RegisterWithEmailScreen = () => {
   const emailBorderColorAnimation = useRef(new Animated.Value(0)).current;
   const emailInputRef = useRef<TextInput>(null);
 
-  const {
-    mutate: registerUserMutation,
-    data,
-    isPending,
-  } = useMutation({
-    mutationFn: registerUser,
-  });
+  const { mutate: registerUserMutation, data, isPending } = useRegisterUser();
 
   const passwordCriteria = useMemo<PasswordCriteria>(() => {
     return {
@@ -95,7 +62,7 @@ const RegisterWithEmailScreen = () => {
   }, [password]);
 
   const isEmailValid = useMemo(() => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return email.trim() !== "" && emailRegex.test(email.trim());
   }, [email]);
 
@@ -139,7 +106,10 @@ const RegisterWithEmailScreen = () => {
 
   useEffect(() => {
     if (data) {
-      router.navigate("/CheckYourEmail");
+      router.navigate({
+        pathname: "/CheckYourEmail",
+        params: { email, password, username },
+      });
     }
     if (data === false) {
       // TODO: Check error status and set error text accordingly
@@ -244,7 +214,7 @@ const RegisterWithEmailScreen = () => {
   };
 
   const handleRegisterUser = () => {
-    const userData = {
+    const userData: UserDataToRegister = {
       user: {
         email,
         password,
@@ -369,7 +339,7 @@ const RegisterWithEmailScreen = () => {
           <Button
             label="Continuar"
             onPress={handleRegisterUser}
-            disabled={!isEmailInputFilled || !isPasswordValid || !!errorText}
+            disabled={!isPasswordValid || !!errorText || !isEmailValid || isPending}
             variant="primary"
             loading={isPending}
           />
@@ -386,6 +356,7 @@ const RegisterWithEmailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   header: {
     paddingHorizontal: 20,
@@ -430,7 +401,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border.secondary,
     borderRadius: 100,
     paddingHorizontal: 20,
-    paddingVertical: 18,
+    minHeight: 55,
+    justifyContent: "center",
   },
   emailInput: {
     color: colors.input.primary,

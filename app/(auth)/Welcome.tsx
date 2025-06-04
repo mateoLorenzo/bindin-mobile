@@ -1,9 +1,10 @@
 import { router } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
 import { AppText as Text } from "../../src/components/AppText";
 import { AppButton as Button } from "../../src/components/AppButton";
 import colors from "@/src/theme/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 const AppLogo = require("../../assets/images/app-logo.png");
 
 const WelcomeScreen = () => {
@@ -20,7 +21,7 @@ const WelcomeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.logoSection}>
         <Image source={AppLogo} style={styles.appLogo} />
         <Text style={styles.appLogoText} variant="label">
@@ -43,7 +44,7 @@ const WelcomeScreen = () => {
           style={styles.guestContainer}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    marginBottom: Platform.OS === "ios" ? 10 : 20,
   },
   logoSection: {
     flex: 1,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     width: 270,
   },
   appLogoText: {
-    fontSize: 19,
+    fontSize: Platform.OS === "ios" ? 18 : 16,
     fontWeight: "600",
     color: colors.text.secondary,
     textAlign: "center",

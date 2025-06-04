@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -13,9 +12,9 @@ import {
 import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ResetPasswordScreen = () => {
-  const [showCode, setShowCode] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [code, setCode] = useState("");
@@ -27,10 +26,6 @@ const ResetPasswordScreen = () => {
 
   const goBack = () => {
     router.back();
-  };
-
-  const toggleCodeVisibility = () => {
-    setShowCode(!showCode);
   };
 
   const toggleNewPasswordVisibility = () => {
@@ -62,23 +57,13 @@ const ResetPasswordScreen = () => {
           <Text style={styles.codeInputGroupLabel} variant="label">
             Codigo (te lo enviamos por correo)
           </Text>
-          <View style={styles.codeInputContainer}>
-            <TextInput
-              style={styles.codeAuthInput}
-              placeholder="***********"
-              placeholderTextColor={colors.input.placeholder}
-              secureTextEntry={!showCode}
-              value={code}
-              onChangeText={setCode}
-            />
-            <TouchableOpacity style={styles.eyeIcon} onPress={toggleCodeVisibility}>
-              <Ionicons
-                name={showCode ? "eye" : "eye-off"}
-                size={24}
-                color={colors.icon.secondary}
-              />
-            </TouchableOpacity>
-          </View>
+          <TextInput
+            style={styles.codeAuthInput}
+            placeholder="12345abcde"
+            placeholderTextColor={colors.input.placeholder}
+            value={code}
+            onChangeText={setCode}
+          />
         </View>
 
         <View style={styles.resetPasswordInputGroup}>
@@ -148,6 +133,7 @@ const ResetPasswordScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   header: {
     alignItems: "center",
@@ -174,7 +160,7 @@ const styles = StyleSheet.create({
     color: colors.input.primary,
     borderWidth: 1,
     borderColor: colors.border.secondary,
-    borderRadius: 25,
+    borderRadius: 100,
     paddingHorizontal: 20,
     paddingVertical: 18,
     paddingRight: 50,

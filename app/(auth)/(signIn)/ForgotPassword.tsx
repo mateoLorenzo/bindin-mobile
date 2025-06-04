@@ -6,7 +6,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -17,6 +16,7 @@ import { AppText as Text } from "../../../src/components/AppText";
 import { AppButton as Button } from "../../../src/components/AppButton";
 import colors from "@/src/theme/colors";
 import { usePasswordReset } from "@/src/hooks/usePasswordReset";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -95,6 +95,7 @@ const ForgotPasswordScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   header: {
     alignItems: "center",

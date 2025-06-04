@@ -6,15 +6,14 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Keyboard,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   Animated,
+  Platform,
 } from "react-native";
-
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppText as Text } from "../../../src/components/AppText";
 import debounce from "lodash.debounce";
@@ -25,6 +24,7 @@ import colors from "@/src/theme/colors";
 import { useQuery } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
 import Constants from "expo-constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const apiUrl = Constants.expoConfig?.extra?.apiUrl;
 
@@ -278,7 +278,9 @@ const SelectUsernameScreen = () => {
             )}
           >
             <BottomSheetView style={styles.bottomSheetContainer}>
-              <Text variant="title">Creemos tu cuenta</Text>
+              <Text style={styles.bottomSheetTitle} variant="title">
+                Creemos tu cuenta
+              </Text>
               <Text variant="body" style={styles.bottomSheetSubtitle}>
                 Y que empiece lo bueno
               </Text>
@@ -312,6 +314,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 20,
+    paddingTop: Platform.OS === "ios" ? 10 : 20,
   },
   header: {
     alignItems: "center",
@@ -321,6 +324,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   title: {
+    fontSize: Platform.OS === "ios" ? 22 : 20,
     marginTop: 15,
     textAlign: "center",
   },
@@ -328,7 +332,7 @@ const styles = StyleSheet.create({
     color: colors.text.tertiary,
     fontFamily: "OpenSauceOneMedium",
     fontSize: 14,
-    marginTop: 5,
+    marginTop: Platform.OS === "ios" ? 5 : 0,
   },
   usernameContainer: {
     gap: 10,
@@ -378,10 +382,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 20,
   },
+  bottomSheetTitle: {
+    fontSize: Platform.OS === "ios" ? 22 : 20,
+  },
   bottomSheetSubtitle: {
     color: colors.text.tertiary,
     fontFamily: "OpenSauceOneMedium",
-    marginTop: 5,
+    fontSize: 14,
   },
   authButtonsContainer: {
     gap: 10,
