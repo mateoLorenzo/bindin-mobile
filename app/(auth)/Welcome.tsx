@@ -1,11 +1,11 @@
 import { router } from "expo-router";
 import React from "react";
-import { Image, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { AppText as Text } from "../../src/components/AppText";
 import { AppButton as Button } from "../../src/components/AppButton";
 import colors from "@/src/theme/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-const AppLogo = require("../../assets/images/app-logo.png");
+import { BindinLogo } from "@/src/components/icon";
 
 const WelcomeScreen = () => {
   const navigateToSignIn = () => {
@@ -23,7 +23,7 @@ const WelcomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoSection}>
-        <Image source={AppLogo} style={styles.appLogo} />
+        <BindinLogo />
         <Text style={styles.appLogoText} variant="label">
           La Red Social de los Gamers.
         </Text>
@@ -59,9 +59,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 5,
-  },
-  appLogo: {
-    width: 270,
   },
   appLogoText: {
     fontSize: Platform.OS === "ios" ? 18 : 16,
