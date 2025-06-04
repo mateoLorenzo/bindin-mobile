@@ -64,7 +64,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
       case "social":
         return [styles.button, styles.socialButton, style];
       case "text":
-        return [styles.button, styles.textButton, disabled && styles.disabledButton, style];
+        return [styles.button, styles.textButton, disabled && styles.disabledTextButton, style];
       default:
         return [styles.button, styles.primaryButton, style];
     }
@@ -139,6 +139,9 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: colors.brand.primaryDisabled,
+  },
+  disabledTextButton: {
+    opacity: 0.5,
   },
   buttonContent: {
     flexDirection: "row",
