@@ -138,7 +138,7 @@ const ForgotPasswordScreen = () => {
               label="Continuar"
               loading={isPending}
               onPress={handlePasswordUpdateRequest}
-              disabled={!isEmailValid}
+              disabled={!isEmailValid || isPending}
               variant="primary"
             />
           </View>

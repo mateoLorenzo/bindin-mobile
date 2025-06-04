@@ -23,9 +23,9 @@ import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
 import { useQuery } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
-import Constants from "expo-constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getApiUrl } from "@/src/utils";
+import useGoogleAuth from "@/src/auth/useGoogleAuth";
 
 const checkUsername = async (username: string) => {
   try {
@@ -70,10 +70,18 @@ const SelectUsernameScreen = () => {
     gcTime: 0,
   });
 
+  const { promptAsync, isLoading: isGoogleLoading, response } = useGoogleAuth();
+
   const animatedUsernameBorderColor = usernameBorderColorAnimation.interpolate({
     inputRange: [-1, 0, 1],
     outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
   });
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      router.navigate("/(onboarding)");
+    }
+  }, [response]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -137,7 +145,9 @@ const SelectUsernameScreen = () => {
   };
 
   const handleGoogleLogin = () => {
-    router.navigate("/(onboarding)");
+    if (!isGoogleLoading) {
+      promptAsync();
+    }
   };
 
   const handleTwitchLogin = () => {
@@ -233,7 +243,7 @@ const SelectUsernameScreen = () => {
             <Button
               label="Continuar"
               onPress={handleOpenBottomSheet}
-              disabled={!isUsernameInputFilled || !usernameAvailable || isLoading}
+              disabled={!usernameAvailable || isLoading}
               variant="primary"
             />
             {!isLoading && usernameAvailable === false && (
@@ -388,6 +398,7 @@ const styles = StyleSheet.create({
     color: colors.text.tertiary,
     fontFamily: "OpenSauceOneMedium",
     fontSize: 14,
+    marginTop: Platform.OS === "ios" ? 0 : -5,
   },
   authButtonsContainer: {
     gap: 10,
