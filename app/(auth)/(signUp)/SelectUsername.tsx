@@ -25,13 +25,13 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
 import Constants from "expo-constants";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+import { getApiUrl } from "@/src/utils";
 
 const checkUsername = async (username: string) => {
   try {
     // Delay to always show at least 500ms of loading
     const minDelay = new Promise((resolve) => setTimeout(resolve, 500));
+    const apiUrl = getApiUrl();
     const requestPromise = axios
       .get(`${apiUrl}/users/availability?username=${username}`, {
         headers: { "Content-Type": "application/json" },
@@ -51,7 +51,6 @@ const checkUsername = async (username: string) => {
 const SelectUsernameScreen = () => {
   const [username, setUsername] = useState("");
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
-  const isUsernameInputFilled = username.trim() !== "";
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["50%"], []);
 

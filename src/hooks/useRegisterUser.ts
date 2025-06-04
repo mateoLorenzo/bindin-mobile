@@ -1,9 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
-import Constants from "expo-constants";
-import { Platform } from "react-native";
-
-const apiUrl = Platform.OS === "ios" ? Constants.expoConfig?.extra?.apiUrl : "http://10.0.2.2:3000";
+import { getApiUrl } from "@/src/utils";
 
 interface UserDataToRegister {
   user: {
@@ -16,6 +13,7 @@ interface UserDataToRegister {
 
 const registerUser = async (userData: UserDataToRegister) => {
   try {
+    const apiUrl = getApiUrl();
     const response = await axios.post(`${apiUrl}/users`, JSON.stringify(userData), {
       headers: { "Content-Type": "application/json" },
     });

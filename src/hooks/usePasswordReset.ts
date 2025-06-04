@@ -1,17 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
-import Constants from "expo-constants";
-import { Platform } from "react-native";
-
-// const APP_STAGE_URL = "http://localhost:3000"
-const apiUrl = Platform.OS === "ios" ? Constants.expoConfig?.extra?.apiUrl : "http://10.0.2.2:3000";
+import { getApiUrl } from "@/src/utils";
 
 const sendPasswordUpdateRequest = async (email: string) => {
   try {
+    const apiUrl = getApiUrl();
     const response = await axios.post(`${apiUrl}/users/password`, {
-      user: {
-        email,
-      },
+      user: { email },
     });
     const data = response.data;
     return data;
