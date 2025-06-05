@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,7 +19,7 @@ import { SocialProvider } from "@/src/types";
 import colors from "@/src/theme/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getApiUrl } from "@/src/utils";
-import useGoogleAuth from "@/src/auth/useGoogleAuth";
+// import useGoogleAuth from "@/src/auth/useGoogleAuth";
 
 const handleSignIn = async (email: string, password: string) => {
   try {
@@ -44,13 +43,13 @@ const SignInScreen = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { promptAsync, isLoading: isGoogleLoading, response } = useGoogleAuth();
+  // const { promptAsync, isLoading: isGoogleLoading, response } = useGoogleAuth();
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      router.navigate("/(home)");
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === "success") {
+  //     router.navigate("/(home)");
+  //   }
+  // }, [response]);
 
   const handleLoginSuccess = () => {
     setEmail("");
@@ -216,7 +215,7 @@ const SignInScreen = () => {
             <Button
               label="Continuar"
               onPress={onSubmit}
-              disabled={!email || !password || isPending || isGoogleLoading}
+              disabled={!email || !password || isPending}
               variant="primary"
               loading={isPending}
               style={styles.signInButton}

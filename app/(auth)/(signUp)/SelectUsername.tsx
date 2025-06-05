@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { isAxiosError } from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getApiUrl } from "@/src/utils";
-import useGoogleAuth from "@/src/auth/useGoogleAuth";
+// import useGoogleAuth from "@/src/auth/useGoogleAuth";
 
 const checkUsername = async (username: string) => {
   try {
@@ -70,18 +70,18 @@ const SelectUsernameScreen = () => {
     gcTime: 0,
   });
 
-  const { promptAsync, isLoading: isGoogleLoading, response } = useGoogleAuth();
+  // const { promptAsync, isLoading: isGoogleLoading, response } = useGoogleAuth();
 
   const animatedUsernameBorderColor = usernameBorderColorAnimation.interpolate({
     inputRange: [-1, 0, 1],
     outputRange: [colors.brand.error, colors.border.secondary, colors.brand.success],
   });
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      router.navigate("/(onboarding)");
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === "success") {
+  //     router.navigate("/(onboarding)");
+  //   }
+  // }, [response]);
 
   useEffect(() => {
     if (data !== undefined) {

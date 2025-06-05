@@ -19,10 +19,24 @@ import colors from "@/src/theme/colors";
 import { usePasswordReset } from "@/src/hooks/usePasswordReset";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEmailValidation } from "@/src/hooks/useEmailValidation";
+import { isAxiosError } from "axios";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
-  const { mutate: sendPasswordUpdateRequest, isPending, data } = usePasswordReset();
+  const [errorMessage, setErrorMessage] = useState("");
+  const {
+    mutate: sendPasswordUpdateRequest,
+    isPending,
+    data,
+  } = usePasswordReset({
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        if (error.response?.data?.status === 500) {
+          setErrorMessage("Error interno del servidor");
+        }
+      }
+    },
+  });
 
   const {
     isValid: isEmailValid,
@@ -52,6 +66,12 @@ const ForgotPasswordScreen = () => {
   }, [data]);
 
   useEffect(() => {
+    if (errorMessage) {
+      setErrorMessage("");
+    }
+  }, [email]);
+
+  useEffect(() => {
     // Update animation based on email status
     let animationValue = 0;
     let errorOpacity = 0;
@@ -67,6 +87,11 @@ const ForgotPasswordScreen = () => {
       errorOpacity = 0;
     }
 
+    if (errorMessage) {
+      animationValue = -1;
+      errorOpacity = 1;
+    }
+
     Animated.parallel([
       Animated.timing(emailBorderColorAnimation, {
         toValue: animationValue,
@@ -79,7 +104,7 @@ const ForgotPasswordScreen = () => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [emailStatus]);
+  }, [emailStatus, errorMessage]);
 
   const handlePasswordUpdateRequest = () => {
     if (isEmailValid) {
@@ -128,7 +153,7 @@ const ForgotPasswordScreen = () => {
 
             <Animated.View style={{ opacity: errorMessageOpacity }}>
               <Text style={styles.errorText} variant="label">
-                {emailErrorMessage || " "}
+                {emailErrorMessage || errorMessage || " "}
               </Text>
             </Animated.View>
           </View>
