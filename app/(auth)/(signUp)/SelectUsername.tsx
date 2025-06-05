@@ -145,16 +145,20 @@ const SelectUsernameScreen = () => {
   };
 
   const handleGoogleLogin = () => {
-    if (!isGoogleLoading) {
-      promptAsync();
-    }
+    // TODO: Implement Google login
+    router.navigate("/(onboarding)");
+    // if (!isGoogleLoading) {
+    //   promptAsync();
+    // }
   };
 
   const handleTwitchLogin = () => {
+    // TODO: Implement Twitch login
     router.navigate("/(onboarding)");
   };
 
   const handleDiscordLogin = () => {
+    // TODO: Implement Discord login
     router.navigate("/(onboarding)");
   };
 

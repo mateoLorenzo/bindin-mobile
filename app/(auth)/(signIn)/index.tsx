@@ -96,9 +96,11 @@ const SignInScreen = () => {
   };
 
   const handleGoogleLogin = () => {
-    if (!isGoogleLoading) {
-      promptAsync();
-    }
+    // TODO: Implement Google login
+    // if (!isGoogleLoading) {
+    //   promptAsync();
+    // }
+    router.navigate("/(home)");
   };
 
   const handleTwitchLogin = () => {
